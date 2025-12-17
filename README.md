@@ -15,6 +15,15 @@ This is the "Hello World" of the repository. A simple Console Application that d
 - Creating a basic `ChatClientAgent`.
 - Streaming vs. Non-streaming responses.
 
+### 2. TokenUsage
+
+This project demonstrates how to retrieve and display token usage statistics (Input, Output, and Reasoning tokens) when using the Microsoft Agent Framework.
+
+**Key Concepts:**
+- Accessing `UsageDetails` from `AgentRunResponse`.
+- Handling token usage in **Streaming** scenarios.
+- Using shared extension methods for consistent output.
+
 ---
 
 ## Getting Started

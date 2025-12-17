@@ -8,15 +8,10 @@ using GenerativeAI;
 using GenerativeAI.Microsoft;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
-using Microsoft.Extensions.Configuration;
+using Shared;
 
-IConfiguration config = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true)
-    .Build();
-
-string apiKey = config.GetValue<string>("GenerativeAI:ApiKey")!;
+Secrets secrets = SecretManager.GetSecrets();
+string apiKey = secrets.GoogleGeminiApiKey;
 
 string model = GoogleAIModels.Gemini25Flash;
 

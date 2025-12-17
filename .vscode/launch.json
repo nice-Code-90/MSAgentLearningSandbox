@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug ZeroToFirstAgent",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-zero",
+            "program": "${workspaceFolder}/ZeroToFirstAgent.GoogleGemini/bin/Debug/net10.0/ZeroToFirstAgent.GoogleGemini.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/ZeroToFirstAgent.GoogleGemini",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug TokenUsage",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-token",
+            "program": "${workspaceFolder}/TokenUsage/bin/Debug/net10.0/TokenUsage.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/TokenUsage",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        }
+    ]
+}
