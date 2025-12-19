@@ -49,6 +49,18 @@ This project focuses on multi-turn conversations and state persistence. It demon
 
 ---
 
+### 4. ToolCalling.Basics
+
+This project introduces the fundamental concept of **Tool Calling** (Function Calling). It demonstrates how an agent can extend its capabilities by executing local C# code to fetch real-time information.
+
+**Key Concepts:**
+- Defining and registering C# methods as tools using `AIFunctionFactory`.
+- The "Tool Call Flow": User Input -> Agent decides to use a tool -> System executes local code -> Agent summarizes the result for the user.
+- Using the `tools` parameter in `ChatClientAgent` to provide external capabilities.
+- Providing real-time data (like system time and timezone) to a "Time Expert" agent.
+
+---
+
 ## Getting Started
 
 ### Prerequisites

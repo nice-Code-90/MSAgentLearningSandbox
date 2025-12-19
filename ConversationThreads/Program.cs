@@ -1,10 +1,8 @@
 ﻿using OpenAI;
-using OpenAI.Chat;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Shared;
 using System.ClientModel;
-using Shared.Extensions;
 using ConversationThreads;
 
 Secrets secrets = SecretManager.GetSecrets();
