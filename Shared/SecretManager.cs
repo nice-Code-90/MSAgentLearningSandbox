@@ -16,8 +16,7 @@ public class SecretManager
         string cerebrasKey = config["Cerebras:ApiKey"]
             ?? throw new InvalidOperationException("Cerebras API Key not found in appsettings.");
 
-        string googleKey = config["GenerativeAI:ApiKey"] ?? string.Empty;
 
-        return new Secrets(googleKey, cerebrasKey);
+        return new Secrets(cerebrasKey);
     }
 }

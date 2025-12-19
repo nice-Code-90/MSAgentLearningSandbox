@@ -44,6 +44,17 @@
             "cwd": "${workspaceFolder}/ToolCalling.Basics",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug ToolCalling Advanced",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-tools-advanced",
+            "program": "${workspaceFolder}/ToolCalling.Advanced/bin/Debug/net10.0/ToolCalling.Advanced.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/ToolCalling.Advanced",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }
