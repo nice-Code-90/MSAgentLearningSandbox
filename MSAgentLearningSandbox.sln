@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenUsage", "TokenUsage\To
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{EB26CBC6-31C5-4388-A2FD-0F2F102AEC46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConversationThreads", "ConversationThreads\ConversationThreads.csproj", "{46E876E0-39D5-47E5-8A2B-FCDB158D799D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{EB26CBC6-31C5-4388-A2FD-0F2F102AEC46}.Release|x64.Build.0 = Release|Any CPU
 		{EB26CBC6-31C5-4388-A2FD-0F2F102AEC46}.Release|x86.ActiveCfg = Release|Any CPU
 		{EB26CBC6-31C5-4388-A2FD-0F2F102AEC46}.Release|x86.Build.0 = Release|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Debug|x64.Build.0 = Debug|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Debug|x86.Build.0 = Debug|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Release|x64.ActiveCfg = Release|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Release|x64.Build.0 = Release|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Release|x86.ActiveCfg = Release|Any CPU
+		{46E876E0-39D5-47E5-8A2B-FCDB158D799D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

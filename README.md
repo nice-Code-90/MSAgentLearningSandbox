@@ -37,6 +37,18 @@ This project demonstrates how to retrieve and display token usage statistics (In
 
 ---
 
+### 3. ConversationThreads
+
+This project focuses on multi-turn conversations and state persistence. It demonstrates how to save an agent's conversation history to a file and restore it later, allowing the agent to "remember" previous interactions across application restarts.
+
+**Key Concepts:**
+- Managing the `AgentThread` lifecycle.
+- Serializing and Deserializing threads using `agent.Serialize()` and `agent.DeserializeThread()`.
+- Implementing a file-based persistence layer (`AgentThreadPersistence`).
+- Restoring the console UI state from a resumed thread's message store.
+
+---
+
 ## Getting Started
 
 ### Prerequisites
