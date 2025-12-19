@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroToFirstAgent.GoogleGemini", "ZeroToFirstAgent.GoogleGemini\ZeroToFirstAgent.GoogleGemini.csproj", "{90E2FC57-9BCF-4026-8B11-35B9D1C1B958}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroToFirstAgent", "ZeroToFirstAgent\ZeroToFirstAgent.csproj", "{90E2FC57-9BCF-4026-8B11-35B9D1C1B958}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenUsage", "TokenUsage\TokenUsage.csproj", "{BBB9464B-CD86-44BF-B56B-D8F688DAAE37}"
 EndProject

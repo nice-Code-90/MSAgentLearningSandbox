@@ -12,9 +12,12 @@ public class SecretManager
             .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true)
             .Build();
 
-        string googleGeminiApiKey = config["GenerativeAI:ApiKey"]
-            ?? throw new InvalidOperationException("API Key not found. Please check appsettings.Local.json");
 
-        return new Secrets(googleGeminiApiKey);
+        string cerebrasKey = config["Cerebras:ApiKey"]
+            ?? throw new InvalidOperationException("Cerebras API Key not found in appsettings.");
+
+        string googleKey = config["GenerativeAI:ApiKey"] ?? string.Empty;
+
+        return new Secrets(googleKey, cerebrasKey);
     }
 }

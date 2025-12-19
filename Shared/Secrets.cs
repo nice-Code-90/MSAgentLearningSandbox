@@ -1,3 +1,3 @@
 namespace Shared;
 
-public record Secrets(string GoogleGeminiApiKey);
+public record Secrets(string GoogleGeminiApiKey, string CerebrasApiKey);

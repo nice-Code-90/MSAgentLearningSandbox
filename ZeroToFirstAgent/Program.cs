@@ -4,20 +4,24 @@
  * 3: Create an GenerativeAIChatClient for an ChatClientAgent
  * 4: Call RunAsync or RunStreamingAsync
  */
-using GenerativeAI;
-using GenerativeAI.Microsoft;
+using OpenAI;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Shared;
+using System.ClientModel;
 
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.GoogleGeminiApiKey;
+string apiKey = secrets.CerebrasApiKey;
+string modelId = "llama-3.3-70b";
+var openAIClient = new OpenAIClient(
+    new ApiKeyCredential(apiKey),
+    new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
+);
 
-string model = GoogleAIModels.Gemini25Flash;
 
-IChatClient client = new GenerativeAIChatClient(apiKey, model);
+
+IChatClient client = openAIClient.GetChatClient(modelId).AsIChatClient();
 ChatClientAgent agent = new(client);
-
 AgentRunResponse response = await agent.RunAsync("What is the Capital of Australia?");
 Console.WriteLine(response);
 

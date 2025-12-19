@@ -1,32 +1,34 @@
-﻿using GenerativeAI;
-using GenerativeAI.Microsoft;
+﻿using OpenAI;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Shared;
+using System.ClientModel;
 using Shared.Extensions;
 
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.GoogleGeminiApiKey;
+string apiKey = secrets.CerebrasApiKey;
+string modelId = "llama-3.3-70b";
 
-string model = GoogleAIModels.Gemini25Flash;
+var openAIClient = new OpenAIClient(
+    new ApiKeyCredential(apiKey),
+    new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
+);
 
-IChatClient client = new GenerativeAIChatClient(apiKey, model);
+IChatClient client = openAIClient.GetChatClient(modelId).AsIChatClient();
 ChatClientAgent agent = new(client);
 
 string question = "What is the capital of France and how many people live there?";
 
-//Simple
+// --- SIMPLE RUN ---
 AgentRunResponse response = await agent.RunAsync(question);
 Console.WriteLine(response);
 
-Utils.WriteLineDarkGray($"- Input Tokens: {response.Usage?.InputTokenCount}");
-Utils.WriteLineDarkGray($"- Output Tokens: {response.Usage?.OutputTokenCount} " +
-                        $"({response.Usage?.GetOutputTokensUsedForReasoning()} was used for reasoning)");
+response.Usage.OutputAsInformation();
 
 //------------------------------------------------------------------------------------------------------------------------
 Utils.Separator();
 
-//Streaming
+// --- STREAMING RUN ---
 List<AgentRunResponseUpdate> updates = [];
 await foreach (AgentRunResponseUpdate update in agent.RunStreamingAsync(question))
 {
@@ -36,9 +38,7 @@ await foreach (AgentRunResponseUpdate update in agent.RunStreamingAsync(question
 Console.WriteLine();
 
 AgentRunResponse collectedResponseFromStreaming = updates.ToAgentRunResponse();
-Utils.WriteLineDarkGray($"- Input Tokens (Streaming): {collectedResponseFromStreaming.Usage?.InputTokenCount}");
-Utils.WriteLineDarkGray($"- Output Tokens (Streaming): {collectedResponseFromStreaming.Usage?.OutputTokenCount} " +
-                        $"({collectedResponseFromStreaming.Usage?.GetOutputTokensUsedForReasoning()} was used for reasoning)");
+collectedResponseFromStreaming.Usage.OutputAsInformation();
 
 Utils.Separator();
 Console.ReadKey();
