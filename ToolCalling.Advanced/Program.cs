@@ -9,21 +9,26 @@ using System.Text;
 using ToolCalling.Advanced.Tools;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 
-// 1. Titkok és Beállítások betöltése
 Secrets secrets = SecretManager.GetSecrets();
 string apiKey = secrets.CerebrasApiKey;
 string modelId = "llama-3.3-70b";
 
-// 2. Cerebras Kliens inicializálása (OpenAI kompatibilis módon)
+
 var openAIClient = new OpenAIClient(
     new ApiKeyCredential(apiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 
-// IChatClient absztrakció létrehozása
-IChatClient innerClient = openAIClient.GetChatClient(modelId).AsIChatClient();
+IChatClient innerClient = openAIClient
+    .GetChatClient(modelId)
+    .AsIChatClient()
+    .AsBuilder()
+    .ConfigureOptions(options =>
+    {
+        options.AllowMultipleToolCalls = false;
+    })
+    .Build();
 
-// 3. Toolok (eszközök) összegyűjtése Reflection segítségével
 FileSystemTools target = new();
 MethodInfo[] methods = typeof(FileSystemTools).GetMethods(BindingFlags.Public | BindingFlags.Instance);
 List<AITool> listOfTools = methods
@@ -31,13 +36,10 @@ List<AITool> listOfTools = methods
     .Cast<AITool>()
     .ToList();
 
-// Jóváhagyáshoz kötött "veszélyes" eszköz hozzáadása
 listOfTools.Add(new ApprovalRequiredAIFunction(AIFunctionFactory.Create(DangerousTools.SomethingDangerous)));
 
 string actualRoot = target.GetRootFolder();
 
-// 4. AIAgent összeállítása Builder mintával
-// Itt az innerClient-et használjuk az Azure kliens helyett
 AIAgent agent = innerClient
     .CreateAIAgent(
         instructions: $"""
@@ -60,7 +62,6 @@ AgentThread thread = agent.GetNewThread();
 
 Console.WriteLine("--- Advanced File Expert Agent Ready (Cerebras) ---");
 
-// 5. Interaktív hurok
 while (true)
 {
     Console.Write("> ");
@@ -69,10 +70,10 @@ while (true)
 
     ChatMessage message = new(ChatRole.User, input);
 
-    // Első futtatás
+
     AgentRunResponse response = await agent.RunAsync(message, thread);
 
-    // Human-in-the-loop: Jóváhagyási kérések kezelése
+
     List<UserInputRequestContent> userInputRequests = response.UserInputRequests.ToList();
     while (userInputRequests.Count > 0)
     {
@@ -89,17 +90,16 @@ while (true)
             })
             .ToList();
 
-        // Válasz küldése az ügynöknek a jóváhagyás eredményével
+
         response = await agent.RunAsync(userInputResponses, thread);
         userInputRequests = response.UserInputRequests.ToList();
     }
 
-    // Végső válasz kiírása
+
     Console.WriteLine(response);
     Utils.Separator();
 }
 
-// Middleware implementáció a tool hívások vizuális követéséhez
 async ValueTask<object?> FunctionCallMiddleware(
     AIAgent callingAgent,
     FunctionInvocationContext context,
