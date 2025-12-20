@@ -2,7 +2,7 @@
 
 This repository documents my journey exploring the **Microsoft Agent Framework**. It contains a collection of isolated projects, each focusing on different capabilities, integrations, and patterns within the ecosystem.
 
-> **Acknowledgement:** This repository is inspired by and adapted from [rwjdk/MicrosoftAgentFrameworkSamples](https://github.com/rwjdk/MicrosoftAgentFrameworkSamples). The samples here are rewritten to utilize **Cerebras Inference** with Llama models.
+> **Acknowledgement:** This repository is inspired by and adapted from [rwjdk/MicrosoftAgentFrameworkSamples](https://github.com/rwjdk/MicrosoftAgentFrameworkSamples). The samples here are rewritten to utilize **Cerebras Inference** with high-performance models.
 
 ## Why Cerebras?
 
@@ -58,6 +58,25 @@ This project introduces the fundamental concept of **Tool Calling** (Function Ca
 - The "Tool Call Flow": User Input -> Agent decides to use a tool -> System executes local code -> Agent summarizes the result for the user.
 - Using the `tools` parameter in `ChatClientAgent` to provide external capabilities.
 - Providing real-time data (like system time and timezone) to a "Time Expert" agent.
+
+---
+
+### 5. ToolCalling.Advanced (The "Fruit Sorter")
+A complex agentic workflow where the agent manages a local Linux filesystem. It demonstrates high-level reasoning and multi-step tool execution.
+
+**Key Challenges & Solutions:**
+- **Model Selection:** Transitioned from Llama to **Qwen-3-32b** for superior tool-calling stability and reasoning capabilities.
+- **Sequential Execution:** Configured `AllowMultipleToolCalls = false` to prevent API errors (400 Bad Request) caused by overwhelming parallel JSON generations.
+- **Reasoning Patterns:** Utilizing Qwen's internal `<think>` process to categorize data (e.g., sorting fruits by color based on text descriptions).
+- **Filesystem Sandbox:** Implementing a `Guard` pattern to ensure the agent only operates within a specific directory.
+
+---
+
+## Learning Outcomes: Llama vs. Qwen for Agents
+
+During development, I discovered that while Llama is excellent for general chat, **Qwen-3** is significantly more reliable for complex function calling on the Cerebras platform. 
+- **Llama 3.3:** Occasionally fails with "400 Bad Request" when attempting complex tool chains due to formatting inconsistencies.
+- **Qwen 3:** Extremely stable JSON generation and follows system instructions with high precision, making it the preferred model for "Agentic" workflows in this sandbox.
 
 ---
 

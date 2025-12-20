@@ -11,7 +11,7 @@ using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 
 Secrets secrets = SecretManager.GetSecrets();
 string apiKey = secrets.CerebrasApiKey;
-string modelId = "llama-3.3-70b";
+string modelId = "qwen-3-32b";
 
 
 var openAIClient = new OpenAIClient(
