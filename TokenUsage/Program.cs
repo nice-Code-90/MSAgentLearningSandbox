@@ -7,7 +7,7 @@ using Shared.Extensions;
 
 Secrets secrets = SecretManager.GetSecrets();
 string apiKey = secrets.CerebrasApiKey;
-string modelId = "llama-3.3-70b";
+string modelId = secrets.ModelId;
 
 var openAIClient = new OpenAIClient(
     new ApiKeyCredential(apiKey),

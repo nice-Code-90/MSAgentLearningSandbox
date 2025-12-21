@@ -55,6 +55,17 @@
             "cwd": "${workspaceFolder}/ToolCalling.Advanced",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug ToolCalling FromAnMcpServer",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-tools-from-mcp",
+            "program": "${workspaceFolder}/ToolCalling.FromAnMcpServer/bin/Debug/net10.0/ToolCalling.FromAnMcpServer.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/ToolCalling.FromAnMcpServer",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }

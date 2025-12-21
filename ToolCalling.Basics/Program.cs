@@ -7,7 +7,7 @@ using ToolCalling.Basics;
 
 Secrets secrets = SecretManager.GetSecrets();
 string apiKey = secrets.CerebrasApiKey;
-string modelId = "llama3.1-8b";
+string modelId = secrets.ModelId;
 
 var openAIClient = new OpenAIClient(
     new ApiKeyCredential(apiKey),

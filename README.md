@@ -80,6 +80,15 @@ During development, I discovered that while Llama is excellent for general chat,
 
 ---
 
+### 6. ToolCalling.MCP (GitHub Expert)
+This project demonstrates the **Model Context Protocol (MCP)** integration. The agent connects to the remote GitHub Copilot MCP server to perform real-time repository analysis and management.
+
+**Key Concepts:**
+- Implementing `McpClient` with `HttpClientTransport`.
+- Bridging remote MCP tools into the Microsoft Agent Framework as standard `AITools`.
+- Using **Qwen-3-32b** on Cerebras to handle complex, remote API-driven tool calls.
+- Securely passing GitHub Personal Access Tokens (PAT) via additional HTTP headers.
+
 ## Getting Started
 
 ### Prerequisites

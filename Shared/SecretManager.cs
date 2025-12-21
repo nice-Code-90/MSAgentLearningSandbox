@@ -13,10 +13,12 @@ public class SecretManager
             .Build();
 
 
-        string cerebrasKey = config["Cerebras:ApiKey"]
-            ?? throw new InvalidOperationException("Cerebras API Key not found in appsettings.");
+        string cerebrasKey = config["Cerebras:ApiKey"] ?? string.Empty;
+        string modelId = config["Cerebras:Model"] ?? "qwen-3-32b";
+        string githubPatToken = config["GitHubPatToken"] ?? string.Empty;
 
 
-        return new Secrets(cerebrasKey);
+
+        return new Secrets(cerebrasKey, githubPatToken, modelId);
     }
 }
