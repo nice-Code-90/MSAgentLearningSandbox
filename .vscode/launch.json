@@ -99,6 +99,17 @@
             "cwd": "${workspaceFolder}/AgentInputData",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Workflow Pizza",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-pizza",
+            "program": "${workspaceFolder}/Workflow.AiAssisted.PizzaSample/bin/Debug/net10.0/Workflow.AiAssisted.PizzaSample.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Workflow.AiAssisted.PizzaSample",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }

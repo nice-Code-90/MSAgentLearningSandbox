@@ -107,6 +107,16 @@ Explores providing the agent with data other than text, such as Images and PDF f
 
 ---
 
+### 10. Workflow.AiAssisted (Pizza Sample)
+Demonstrates multi-step agentic workflows with logical branching.
+
+**Key Concepts:**
+- **Executors:** Defining isolated units of work (AI or Code-based).
+- **WorkflowBuilder:** Mapping the flow from input to final state.
+- **Conditional Switching:** Routing the process based on object state (e.g., Stock status).
+- **Cerebras Performance:** Executing multi-step AI chains with sub-second latency.
+- **Workflow State:** Maintaining and modifying a central object (like PizzaOrder) as it passes through different stages of the process.
+
 ## Technical Insights & Learning Outcomes
 
 ### Llama vs. Qwen for Agentic Workflows
