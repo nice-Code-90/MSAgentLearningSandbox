@@ -88,6 +88,17 @@
             "cwd": "${workspaceFolder}/ReasoningEffort",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug AgentInputData",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-agent-input",
+            "program": "${workspaceFolder}/AgentInputData/bin/Debug/net10.0/AgentInputData.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/AgentInputData",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }

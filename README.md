@@ -97,6 +97,16 @@ Explores how to handle models that perform internal reasoning (thinking) within 
 
 ---
 
+### 9. AgentInputData (Multi-Modal Inputs)
+Explores providing the agent with data other than text, such as Images and PDF files.
+
+**Key Concepts:**
+- **UriContent & DataContent:** Standard framework classes for non-text inputs.
+- **Provider Constraints:** Testing the limits of Cerebras models with binary data.
+- **Local Workarounds:** Why local text extraction is necessary for text-only models.
+
+---
+
 ## Technical Insights & Learning Outcomes
 
 ### Llama vs. Qwen for Agentic Workflows
@@ -104,6 +114,10 @@ During development, I discovered that while Llama is excellent for general chat,
 - **Llama 3.3:** Occasionally fails with "400 Bad Request" when attempting complex tool chains due to formatting inconsistencies.
 - **Qwen 3:** Extremely stable JSON generation and high precision in following system instructions.
 
+### The Multi-Modal Gap on Cerebras
+Testing `AgentInputData` revealed that Cerebras models (Llama 3.3, Qwen 3) are currently **text-only**.
+- **The 422 Error:** Sending `DataContent` (Images/PDFs) natively results in a `ClientResultException: Status 422 (Unprocessable Entity)`. 
+- **The Solution:** To work with files on Cerebras, one must implement a local pre-processing layer (e.g., using `PdfPig` for PDF text extraction or Tesseract for OCR) and pass the result to the agent as standard `TextContent`.
 
 
 ### Handling "Reasoning" on Cerebras
