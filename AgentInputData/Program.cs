@@ -7,12 +7,10 @@ using System.ClientModel;
 using Shared.Extensions;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 
-// 1. Setup Cerebras Secrets
 Secrets secrets = SecretManager.GetSecrets();
 string apiKey = secrets.CerebrasApiKey;
 string modelId = secrets.ModelId;
 
-// 2. Initialize Cerebras Client
 var openAIClient = new OpenAIClient(
     new ApiKeyCredential(apiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
@@ -20,7 +18,6 @@ var openAIClient = new OpenAIClient(
 
 IChatClient client = openAIClient.GetChatClient(modelId).AsIChatClient();
 
-// 3. Create Agent using your extension method
 ChatClientAgent agent = client.CreateCerebrasAgent(
     instructions: "You are a visual expert. Describe the content of the provided data carefully."
 );
@@ -42,7 +39,6 @@ switch (scenario)
             // NOTE: This will likely fail on Cerebras until they support Vision models.
             // But this is the standard way to do it in the framework.
 
-            // Image via URI
             Console.WriteLine("--- Testing Image via URI ---");
             response = await agent.RunAsync(new ChatMessage(ChatRole.User,
             [
@@ -96,7 +92,6 @@ void ShowResponse(AgentRunResponse agentRunResponse)
 
     Console.WriteLine($"[AGENT]: {cleanedOutput}");
 
-    // Using your enhanced token estimation logic
     agentRunResponse.Usage.OutputAsInformation(rawOutput);
 }
 
