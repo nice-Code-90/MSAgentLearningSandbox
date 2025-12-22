@@ -66,6 +66,17 @@
             "cwd": "${workspaceFolder}/ToolCalling.FromAnMcpServer",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug StructuredOutput",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-structured",
+            "program": "${workspaceFolder}/StructuredOutput/bin/Debug/net10.0/StructuredOutput.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/StructuredOutput",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }

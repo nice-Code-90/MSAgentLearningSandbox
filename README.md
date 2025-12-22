@@ -89,6 +89,14 @@ This project demonstrates the **Model Context Protocol (MCP)** integration. The 
 - Using **Qwen-3-32b** on Cerebras to handle complex, remote API-driven tool calls.
 - Securely passing GitHub Personal Access Tokens (PAT) via additional HTTP headers.
 
+### 7. StructuredOutput
+This project demonstrates how to force the agent to return data in a specific C# object format instead of plain text.
+
+**Key Concepts:**
+- **JSON Schema:** Using `ChatResponseFormat.ForJsonSchema<T>` to guide the model.
+- **Generic RunAsync:** Utilizing `AgentRunResponse<T>` for automatic deserialization.
+- **Reliability:** Why Qwen-3-32b is the ideal choice for structured data due to its strict adherence to provided schemas.
+
 ## Getting Started
 
 ### Prerequisites
