@@ -120,17 +120,37 @@ Demonstrates multi-step agentic workflows with logical branching.
 ---
 
 ### 11. IntentDispatcher (The "Router" Pattern)
-Demonstrates a sophisticated "Router" architecture where a fast, lightweight model categorizes the user's intent and dispatches the task to a high-reasoning specialized agent.
+Demonstrates a sophisticated "Router" architecture using a tiered model approach.
 
 **Key Concepts:**
-- **Model Tiering (Mini vs. Main):** Using a lightweight model (llama3.1-8b) for intent detection and a powerful reasoning model (qwen-3-32b) for expert responses.
-- **Intent Detection:** Utilizing `RunAsync<T>` to classify natural language input into a C# Enum based on JSON Schema.
-- **Dynamic Agent Creation:** Instantiating specialized expert agents (e.g., MusicNerd, MovieNerd) only when the router determines they are necessary.
-- **Efficiency & Latency:** How Cerebras' speed allows for multi-step agent chains (Classifier -> Expert) to execute in sub-second time, providing a seamless user experience.
-- **Clean Thought Filtering:** Implementing a universal cleaning logic that strips `<think>` blocks from the expert's response while remaining compatible with non-reasoning models.
+- **Reasoning-Based Routing:** Using **Qwen-3-32b** as the router because its reasoning stability makes it significantly more reliable for valid JSON generation than smaller 8b models.
+- **Tiered Expert Strategy:** Dispatching tasks to **Llama-3.3-70b** for massive domain knowledge (experts) or **Llama-3.1-8b** for fast general responses (Other).
+- **Custom Extension Bridge:** Implementation of `RunCerebrasAsync<T>` to bridge the gap between Reasoning models and the framework's strict JSON requirements.
+- **Robust Deserialization:** Implementing "forgiving" JSON parsing to handle LLM inconsistencies like case-insensitivity, trailing commas, and String-to-Enum conversion.
 
 
 ## Technical Insights & Learning Outcomes
+
+### The Routing Choice: Qwen vs. Llama
+A critical finding during development was that **Llama-3.1-8b** frequently fails at "Structured Output" (JSON) when queries are complex.
+- **The Issue:** Small models often include conversational filler or incorrect casing, breaking C# `required` property constraints.
+- **The Fix:** Using **Qwen-3-32b** for routing. While it is a reasoning model, its stability with JSON schemas ensures the `switch` logic never fails.
+
+### Tiered Model Performance Table
+
+| Role | Model | Why? |
+| :--- | :--- | :--- |
+| **Router** | `qwen-3-32b` | High precision in following JSON schemas and system instructions. |
+| **Expert** | `llama-3.3-70b` | Massive knowledge base for specialized, high-quality professional answers. |
+| **General** | `llama3.1-8b` | Lowest latency for simple conversational tasks like greetings. |
+
+### The JSON vs. Reasoning Tag Conflict
+Reasoning Models on Cerebras (like Qwen-3) include `<think>` tags directly in the response content, which breaks the framework's default deserialization.
+- **The Solution:** I created a custom extension method `RunCerebrasAsync<T>` that:
+    1. Intercepts the raw string response.
+    2. Strips the reasoning blocks (`Split("</think>").Last()`).
+    3. Cleans up Markdown wrappers (```json).
+    4. Manually deserializes the result using a `JsonStringEnumConverter` and case-insensitive options.
 
 ### Llama vs. Qwen for Agentic Workflows
 During development, I discovered that while Llama is excellent for general chat, **Qwen-3** is significantly more reliable for complex function calling on Cerebras:
