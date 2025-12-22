@@ -110,6 +110,17 @@
             "cwd": "${workspaceFolder}/Workflow.AiAssisted.PizzaSample",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug MultiAgent Manual",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-multi-agent",
+            "program": "${workspaceFolder}/MultiAgent.ManualViaStructuredOutput/bin/Debug/net10.0/MultiAgent.ManualViaStructuredOutput.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MultiAgent.ManualViaStructuredOutput",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }
