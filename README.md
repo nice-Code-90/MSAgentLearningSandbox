@@ -25,6 +25,8 @@ This is the "Hello World" of the repository. A simple Console Application that d
 - Creating a basic `ChatClientAgent`.
 - Handling the `.AsIChatClient()` extension pattern in .NET 10.
 
+---
+
 ### 2. TokenUsage
 This project demonstrates how to retrieve and display token usage statistics (Input, Output, and Reasoning tokens) provided by the Cerebras API through the Microsoft Agent Framework.
 
@@ -127,6 +129,17 @@ Demonstrates a sophisticated "Router" architecture using a tiered model approach
 - **Tiered Expert Strategy:** Dispatching tasks to **Llama-3.3-70b** for massive domain knowledge (experts) or **Llama-3.1-8b** for fast general responses (Other).
 - **Custom Extension Bridge:** Implementation of `RunCerebrasAsync<T>` to bridge the gap between Reasoning models and the framework's strict JSON requirements.
 - **Robust Deserialization:** Implementing "forgiving" JSON parsing to handle LLM inconsistencies like case-insensitivity, trailing commas, and String-to-Enum conversion.
+
+---
+
+### 12. MultiAgent.Delegation (Agent-as-a-Tool)
+This project demonstrates a hierarchical agent architecture where a "Manager" agent invokes other specialized agents rather than direct code tools to perform tasks.
+
+**Key Concepts:**
+- **Agent-as-a-Tool:** Using the `agent.AsAIFunction()` extension to register a full agent as a tool within another agent.
+- **Orchestration:** A central `DelegateAgent` orchestrates the workflow, deciding whether to delegate tasks to the `StringAgent` or `NumberAgent`.
+- **Middleware Observability:** Implementing a custom `FunctionCallMiddleware` to log real-time details of which agent is calling which tool.
+- **Monolith vs. Micro-Agent Pattern:** Comparing a monolithic "Jack of all trades" agent against a delegated, micro-agent structure.
 
 
 ## Technical Insights & Learning Outcomes

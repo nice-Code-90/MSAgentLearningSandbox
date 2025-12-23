@@ -121,6 +121,17 @@
             "cwd": "${workspaceFolder}/MultiAgent.ManualViaStructuredOutput",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug MultiAgent AgentAsTool",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-multi-agent-tool",
+            "program": "${workspaceFolder}/MultiAgent.AgentAsTool/bin/Debug/net10.0/MultiAgent.AgentAsTool.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/MultiAgent.AgentAsTool",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }

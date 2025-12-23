@@ -27,7 +27,8 @@ public static class CerebrasAgentExtensions
         ChatOptions options = new()
         {
             Instructions = instructions,
-            MaxOutputTokens = maxTokens
+            MaxOutputTokens = maxTokens,
+            AllowMultipleToolCalls = false
         };
 
         if (tools?.Count > 0)
@@ -57,10 +58,22 @@ public static class CerebrasAgentExtensions
     {
         string content = response.ToString();
 
-        if (content.Contains("<think>") || content.Contains("<|thinking|>"))
+        string[] delimiters = new[] {
+        "</think>",
+        "</tool_call>",
+        "<|thinking|>",
+        "<|thought|>"
+            };
+
+        if (delimiters.Any(d => content.Contains(d)))
         {
-            content = content.Split(new[] { "</tool_call>", "<|thinking|>" }, StringSplitOptions.None).Last().Trim();
+            content = content.Split(delimiters, StringSplitOptions.None).Last().Trim();
         }
+        else if (content.Contains("<think>"))
+        {
+            content = content.Split(new[] { "<think>" }, StringSplitOptions.None).Last().Trim();
+        }
+
         if (content.StartsWith("Assistant: ", StringComparison.OrdinalIgnoreCase))
         {
             content = content.Substring("Assistant: ".Length).Trim();
