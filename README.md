@@ -141,6 +141,16 @@ This project demonstrates a hierarchical agent architecture where a "Manager" ag
 - **Middleware Observability:** Implementing a custom `FunctionCallMiddleware` to log real-time details of which agent is calling which tool.
 - **Monolith vs. Micro-Agent Pattern:** Comparing a monolithic "Jack of all trades" agent against a delegated, micro-agent structure.
 
+---
+
+### 13. Workflow.Sequential (Legal Summary & Translation)
+This project implements a classic two-stage pipeline where the output of the first agent automatically becomes the input of the second agent.
+
+**Key Concepts:**
+- **AgentWorkflowBuilder.BuildSequential:** Creating a linear chain where agents work in a strict order.
+- **StreamingRun & WatchStreamAsync:** Event-driven monitoring of the entire process and processing intermediate results (events).
+- **Agent Specialization:** A "SummaryAgent" is responsible for logical compression, while a "TranslationAgent" handles language transformation.
+
 
 ## Technical Insights & Learning Outcomes
 

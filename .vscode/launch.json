@@ -132,6 +132,17 @@
             "cwd": "${workspaceFolder}/MultiAgent.AgentAsTool",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Workflow Sequential",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-workflow-sequential",
+            "program": "${workspaceFolder}/Workflow.Sequential/bin/Debug/net10.0/Workflow.Sequential.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Workflow.Sequential",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }

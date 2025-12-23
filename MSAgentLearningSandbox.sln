@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiAgent.ManualViaStructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiAgent.AgentAsTool", "MultiAgent.AgentAsTool\MultiAgent.AgentAsTool.csproj", "{96BFFDB0-0508-4F0D-80F9-A1B9AFA47E19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Sequential", "Workflow.Sequential\Workflow.Sequential.csproj", "{68C328FB-2F44-4558-9128-CDBEE7A1D944}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -195,6 +197,18 @@ Global
 		{96BFFDB0-0508-4F0D-80F9-A1B9AFA47E19}.Release|x64.Build.0 = Release|Any CPU
 		{96BFFDB0-0508-4F0D-80F9-A1B9AFA47E19}.Release|x86.ActiveCfg = Release|Any CPU
 		{96BFFDB0-0508-4F0D-80F9-A1B9AFA47E19}.Release|x86.Build.0 = Release|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Debug|x64.Build.0 = Debug|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Debug|x86.Build.0 = Debug|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Release|x64.ActiveCfg = Release|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Release|x64.Build.0 = Release|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Release|x86.ActiveCfg = Release|Any CPU
+		{68C328FB-2F44-4558-9128-CDBEE7A1D944}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
