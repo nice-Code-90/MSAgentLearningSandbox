@@ -1,33 +1,29 @@
 ﻿using OpenAI;
+using OpenAI.Chat;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Shared;
 using System.ClientModel;
 using ToolCalling.Basics;
+using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.CerebrasApiKey;
-string modelId = secrets.ModelId;
 
 var openAIClient = new OpenAIClient(
-    new ApiKeyCredential(apiKey),
+    new ApiKeyCredential(secrets.CerebrasApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 
-IChatClient innerClient = openAIClient.GetChatClient(modelId).AsIChatClient();
-
-
-var tools = new List<AITool>
-{
-    AIFunctionFactory.Create(Tools.CurrentDataAndTime, "current_date_and_time"),
-    AIFunctionFactory.Create(Tools.CurrentTimezone, "current_timezone")
-};
-
-ChatClientAgent agent = new(
-    innerClient,
-    instructions: "You are a Time Expert. Use the provided tools to answer questions about time and dates.",
-    tools: tools
-);
+ChatClientAgent agent = openAIClient
+    .GetChatClient(secrets.ModelId)
+    .CreateAIAgent(
+        instructions: "You are a Time Expert. Use the provided tools to answer questions about time and dates.",
+        tools:
+        [
+            AIFunctionFactory.Create(Tools.CurrentDataAndTime, "current_date_and_time"),
+            AIFunctionFactory.Create(Tools.CurrentTimezone, "current_timezone")
+        ]
+    );
 
 AgentThread thread = agent.GetNewThread();
 

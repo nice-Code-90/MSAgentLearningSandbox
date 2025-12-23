@@ -6,14 +6,10 @@ using Shared;
 using System.ClientModel;
 using Shared.Extensions;
 
-// 1. Setup Cerebras Secrets
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.CerebrasApiKey;
-string modelId = secrets.ModelId;
 
-// 2. Initialize Cerebras Client with high timeout for reasoning
 var openAIClient = new OpenAIClient(
-    new ApiKeyCredential(apiKey),
+    new ApiKeyCredential(secrets.CerebrasApiKey),
     new OpenAIClientOptions
     {
         Endpoint = new Uri("https://api.cerebras.ai/v1"),
@@ -21,54 +17,43 @@ var openAIClient = new OpenAIClient(
     }
 );
 
-IChatClient GetCerebrasClient(string model) => openAIClient
-    .GetChatClient(model)
-    .AsIChatClient();
+IChatClient client = openAIClient.GetChatClient(secrets.ModelId).AsIChatClient();
 
 string question = "What is the Capital of France and how many people live there?";
 
-// --- APPROACH 1: Default Reasoning ---
-ChatClientAgent agentDefault = GetCerebrasClient(modelId).CreateCerebrasAgent();
+ChatClientAgent agentDefault = client.CreateCerebrasAgent();
 
 Console.WriteLine("--- Approach 1: Default Reasoning ---");
 AgentRunResponse response1 = await agentDefault.RunAsync(question);
 
-string rawOutput1 = response1.ToString();
-string cleanedOutput1 = rawOutput1;
-if (cleanedOutput1.Contains("</think>")) cleanedOutput1 = cleanedOutput1.Split("</think>").Last().Trim();
-
-Console.WriteLine(cleanedOutput1);
-response1.Usage.OutputAsInformation(rawOutput1);
+Console.WriteLine(response1.GetCleanContent());
+response1.Usage.OutputAsInformation(response1.ToString());
 Utils.Separator();
 
-// --- APPROACH 2: Controlling Reasoning via Max Tokens ---
-// Simplified: Just pass the maxTokens parameter directly
-ChatClientAgent agentLimitedReasoning = GetCerebrasClient(modelId)
-    .CreateCerebrasAgent(maxTokens: 500);
+// --- APPROACH 2: Controlling Reasoning via Extension (Minimal Effort) ---
+// We use the new reasoningEffort parameter in your library 
 
-Console.WriteLine("--- Approach 2: Limited Reasoning (Token Control) ---");
-AgentRunResponse response2 = await agentLimitedReasoning.RunAsync(question);
+// Not supported in Cerebras SDK directly yet
 
-string rawOutput2 = response2.ToString();
-string cleanedOutput2 = rawOutput2;
-if (cleanedOutput2.Contains("</think>")) cleanedOutput2 = cleanedOutput2.Split("</think>").Last().Trim();
+// ChatClientAgent agentMinimalEffort = client.CreateCerebrasAgent(
+//     reasoningEffortLevel: "minimal"
+// );
 
-Console.WriteLine(cleanedOutput2);
-response2.Usage.OutputAsInformation(rawOutput2);
-Utils.Separator();
+// Console.WriteLine("--- Approach 2: Minimal Reasoning (via Effort Level) ---");
+// AgentRunResponse response2 = await agentMinimalEffort.RunAsync(question);
 
-// --- APPROACH 3: Instructional Control (Minimal Effort) ---
-// Simplified: Pass instructions directly as the first parameter
-ChatClientAgent agentMinimalEffort = GetCerebrasClient(modelId).CreateCerebrasAgent(
-    instructions: "You are a direct assistant. Answer immediately without long internal thinking."
+// Console.WriteLine(response2.GetCleanContent());
+// response2.Usage.OutputAsInformation(response2.ToString());
+// Utils.Separator();
+
+// --- APPROACH 3: Token Control (Legacy/Fallback method) ---
+ChatClientAgent agentTokenLimit = client.CreateCerebrasAgent(
+    instructions: "Answer immediately.",
+    maxTokens: 500
 );
 
-Console.WriteLine("--- Approach 3: Minimal Reasoning (Instructional Control) ---");
-AgentRunResponse response3 = await agentMinimalEffort.RunAsync(question);
+Console.WriteLine("--- Approach 3: Limited Reasoning (via Max Tokens) ---");
+AgentRunResponse response3 = await agentTokenLimit.RunAsync(question);
 
-string rawOutput3 = response3.ToString();
-string cleanedOutput3 = rawOutput3;
-if (cleanedOutput3.Contains("</think>")) cleanedOutput3 = cleanedOutput3.Split("</think>").Last().Trim();
-
-Console.WriteLine(cleanedOutput3);
-response3.Usage.OutputAsInformation(rawOutput3);
+Console.WriteLine(response3.GetCleanContent());
+response3.Usage.OutputAsInformation(response3.ToString());

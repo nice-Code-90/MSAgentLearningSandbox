@@ -1,4 +1,5 @@
 ﻿using OpenAI;
+using OpenAI.Chat;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Shared;
@@ -6,21 +7,17 @@ using System.ClientModel;
 using ConversationThreads;
 
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.CerebrasApiKey;
-string modelId = secrets.ModelId;
 
 var openAIClient = new OpenAIClient(
-    new ApiKeyCredential(apiKey),
+    new ApiKeyCredential(secrets.CerebrasApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 
-
-IChatClient innerClient = openAIClient.GetChatClient(modelId).AsIChatClient();
-
-ChatClientAgent agent = new(innerClient, instructions: "You are a Friendly AI Bot, answering questions");
+var agent = openAIClient
+    .GetChatClient(secrets.ModelId)
+    .CreateAIAgent(instructions: "You are a Friendly AI Bot, answering questions");
 
 AgentThread thread;
-
 const bool optionToResume = true;
 
 if (optionToResume)
@@ -41,7 +38,7 @@ while (true)
 
     if (string.IsNullOrWhiteSpace(input) || input.ToLower() == "exit") break;
 
-    Microsoft.Extensions.AI.ChatMessage message = new(ChatRole.User, input);
+    Microsoft.Extensions.AI.ChatMessage message = new(Microsoft.Extensions.AI.ChatRole.User, input);
 
     await foreach (AgentRunResponseUpdate update in agent.RunStreamingAsync(message, thread))
     {
@@ -50,6 +47,7 @@ while (true)
     Console.WriteLine();
 
     Utils.Separator();
+
     if (optionToResume)
     {
         await AgentThreadPersistence.StoreThreadAsync(thread);

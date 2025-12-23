@@ -1,57 +1,31 @@
 ﻿#pragma warning disable MEAI001
 using OpenAI;
+using OpenAI.Chat;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
 using Shared;
+using Shared.Extensions;
 using System.ClientModel;
 using System.Reflection;
-using System.Text;
 using ToolCalling.Advanced.Tools;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.CerebrasApiKey;
-string modelId = secrets.ModelId;
-
 
 var openAIClient = new OpenAIClient(
-    new ApiKeyCredential(apiKey),
+    new ApiKeyCredential(secrets.CerebrasApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 
-IChatClient innerClient = openAIClient
-    .GetChatClient(modelId)
-    .AsIChatClient()
-    .AsBuilder()
-    .ConfigureOptions(options =>
-    {
-        options.AllowMultipleToolCalls = false;
-    })
-    .Build();
-
 FileSystemTools target = new();
 MethodInfo[] methods = typeof(FileSystemTools).GetMethods(BindingFlags.Public | BindingFlags.Instance);
-List<AITool> listOfTools = methods
-    .Select(x => AIFunctionFactory.Create(x, target))
-    .Cast<AITool>()
-    .ToList();
-
+List<AITool> listOfTools = methods.Select(x => AIFunctionFactory.Create(x, target)).Cast<AITool>().ToList();
 listOfTools.Add(new ApprovalRequiredAIFunction(AIFunctionFactory.Create(DangerousTools.SomethingDangerous)));
 
-string actualRoot = target.GetRootFolder();
-
-AIAgent agent = innerClient
+AIAgent agent = openAIClient
+    .GetChatClient(secrets.ModelId)
     .CreateAIAgent(
-        instructions: $"""
-            You are a File Expert. 
-            Your workspace is: {actualRoot}
-            
-            RULES:
-            1. ALWAYS work inside this folder.
-            2. If you are unsure where you are, call 'GetRootFolder' to confirm.
-            3. Use full paths for every file operation.
-            4. If the user asks "How many files", call 'GetFiles' using your workspace path.
-            """,
+        instructions: $"You are a File Expert. Workspace: {target.GetRootFolder()}",
         tools: listOfTools
     )
     .AsBuilder()
@@ -59,7 +33,6 @@ AIAgent agent = innerClient
     .Build();
 
 AgentThread thread = agent.GetNewThread();
-
 Console.WriteLine("--- Advanced File Expert Agent Ready (Cerebras) ---");
 
 while (true)
@@ -69,52 +42,32 @@ while (true)
     if (string.IsNullOrWhiteSpace(input) || input.ToLower() == "exit") break;
 
     ChatMessage message = new(ChatRole.User, input);
-
-
     AgentRunResponse response = await agent.RunAsync(message, thread);
-
 
     List<UserInputRequestContent> userInputRequests = response.UserInputRequests.ToList();
     while (userInputRequests.Count > 0)
     {
         List<ChatMessage> userInputResponses = userInputRequests
             .OfType<FunctionApprovalRequestContent>()
-            .Select(functionApprovalRequest =>
+            .Select(req =>
             {
-                Console.WriteLine($"\n[APPROVAL REQUIRED] The agent wants to call: {functionApprovalRequest.FunctionCall.Name}");
-                Console.Write("Type 'Y' to approve, any other key to deny: ");
-
+                Console.WriteLine($"\n[APPROVAL] Agent wants to call: {req.FunctionCall.Name}");
+                Console.Write("Approve (Y/N)? ");
                 bool approved = Console.ReadLine()?.Equals("Y", StringComparison.OrdinalIgnoreCase) ?? false;
-
-                return new ChatMessage(ChatRole.User, [functionApprovalRequest.CreateResponse(approved)]);
-            })
-            .ToList();
-
+                return new ChatMessage(ChatRole.User, [req.CreateResponse(approved)]);
+            }).ToList();
 
         response = await agent.RunAsync(userInputResponses, thread);
         userInputRequests = response.UserInputRequests.ToList();
     }
 
+    Console.WriteLine(response.GetCleanContent());
 
-    Console.WriteLine(response);
     Utils.Separator();
 }
 
-async ValueTask<object?> FunctionCallMiddleware(
-    AIAgent callingAgent,
-    FunctionInvocationContext context,
-    Func<FunctionInvocationContext, CancellationToken, ValueTask<object?>> next,
-    CancellationToken cancellationToken)
+async ValueTask<object?> FunctionCallMiddleware(AIAgent callingAgent, FunctionInvocationContext context, Func<FunctionInvocationContext, CancellationToken, ValueTask<object?>> next, CancellationToken cancellationToken)
 {
-    StringBuilder functionCallDetails = new();
-    functionCallDetails.Append($"[LOG] Tool Call: '{context.Function.Name}'");
-
-    if (context.Arguments.Count > 0)
-    {
-        functionCallDetails.Append($" | Args: {string.Join(", ", context.Arguments.Select(x => $"{x.Key}={x.Value}"))}");
-    }
-
-    Utils.WriteLineDarkGray(functionCallDetails.ToString());
-
+    Utils.WriteLineDarkGray($"[LOG] Tool Call: '{context.Function.Name}'");
     return await next(context, cancellationToken);
 }
