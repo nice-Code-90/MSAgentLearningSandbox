@@ -1,16 +1,16 @@
 using Microsoft.Agents.AI;
-using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using OpenAI.Chat;
+using Microsoft.Extensions.AI;
 
 namespace Shared.Extensions;
 
 public static class CerebrasAgentExtensions
 {
     public static ChatClientAgent CreateCerebrasAgent(
-        this IChatClient chatClient,
+        this ChatClient chatClient,
         string? instructions = null,
         string? name = null,
         string? description = null,
@@ -19,7 +19,11 @@ public static class CerebrasAgentExtensions
         string? reasoningEffortLevel = null,
         ILoggerFactory? loggerFactory = null,
         IServiceProvider? services = null)
+
     {
+
+        IChatClient adaptedClient = chatClient.AsIChatClient();
+
         ChatOptions options = new()
         {
             Instructions = instructions,
@@ -34,9 +38,7 @@ public static class CerebrasAgentExtensions
         {
             options.RawRepresentationFactory = _ => new ChatCompletionOptions
             {
-#pragma warning disable OPENAI001
-                ReasoningEffortLevel = reasoningEffortLevel,
-#pragma warning restore OPENAI001
+                Temperature = 0.7f
             };
         }
 
@@ -47,27 +49,50 @@ public static class CerebrasAgentExtensions
             ChatOptions = options
         };
 
-        return new ChatClientAgent(chatClient, clientAgentOptions, loggerFactory, services);
+        return new ChatClientAgent(adaptedClient, clientAgentOptions, loggerFactory, services);
     }
+
 
     public static string GetCleanContent(this AgentRunResponse response)
     {
         string content = response.ToString();
-        return content.Contains("</think>") ? content.Split("</think>").Last().Trim() : content;
+
+        if (content.Contains("<think>") || content.Contains("<|thinking|>"))
+        {
+            content = content.Split(new[] { "</tool_call>", "<|thinking|>" }, StringSplitOptions.None).Last().Trim();
+        }
+        if (content.StartsWith("Assistant: ", StringComparison.OrdinalIgnoreCase))
+        {
+            content = content.Substring("Assistant: ".Length).Trim();
+        }
+        return content;
     }
+
 
     public static async Task<T> RunCerebrasAsync<T>(this ChatClientAgent agent, string input)
     {
         var response = await agent.RunAsync(input);
         string content = response.GetCleanContent();
+
         int firstBrace = content.IndexOf('{');
         int lastBrace = content.LastIndexOf('}');
+
         if (firstBrace == -1 || lastBrace == -1)
         {
-            throw new JsonException($"No valid JSON found in response: {content}");
+            var match = System.Text.RegularExpressions.Regex.Match(content, @"\{[^{}]*\}");
+            if (match.Success)
+            {
+                content = match.Value;
+            }
+            else
+            {
+                throw new JsonException($"No valid JSON found in response. Cleaned content: '{content}'");
+            }
         }
-
-        string jsonContent = content.Substring(firstBrace, lastBrace - firstBrace + 1);
+        else
+        {
+            content = content.Substring(firstBrace, lastBrace - firstBrace + 1);
+        }
 
         var options = new JsonSerializerOptions
         {
@@ -77,7 +102,14 @@ public static class CerebrasAgentExtensions
             Converters = { new JsonStringEnumConverter() }
         };
 
-        return JsonSerializer.Deserialize<T>(jsonContent, options)
-           ?? throw new JsonException("Failed to deserialize agent response.");
+        try
+        {
+            return JsonSerializer.Deserialize<T>(content, options)
+                ?? throw new JsonException("Deserialization returned null");
+        }
+        catch (Exception ex)
+        {
+            throw new JsonException($"Failed to deserialize response: '{content}'. Error: {ex.Message}", ex);
+        }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.AI;
 using Shared;
 using System.ClientModel;
 using Shared.Extensions;
+using OpenAI.Chat;
 
 namespace Workflow.AiAssisted.PizzaSample;
 
@@ -40,7 +41,7 @@ public class AgentFactory(Secrets secrets)
     /// <summary>
     /// Private helper to initialize the Cerebras-compatible IChatClient with appropriate timeouts.
     /// </summary>
-    private IChatClient GetChatClient()
+    private ChatClient GetChatClient()
     {
         var openAIClient = new OpenAIClient(
             new ApiKeyCredential(secrets.CerebrasApiKey),
@@ -52,6 +53,6 @@ public class AgentFactory(Secrets secrets)
             }
         );
 
-        return openAIClient.GetChatClient(secrets.ModelId).AsIChatClient();
+        return openAIClient.GetChatClient(secrets.ModelId);
     }
 }

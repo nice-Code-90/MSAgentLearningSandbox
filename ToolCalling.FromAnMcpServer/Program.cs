@@ -8,6 +8,7 @@ using System.ClientModel;
 using System.Text;
 using ModelContextProtocol.Client;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
+using OpenAI.Chat;
 
 Secrets secrets = SecretManager.GetSecrets();
 
@@ -16,12 +17,7 @@ var openAIClient = new OpenAIClient(
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 
-IChatClient chatClient = openAIClient
-    .GetChatClient(secrets.ModelId)
-    .AsIChatClient()
-    .AsBuilder()
-    .ConfigureOptions(options => options.AllowMultipleToolCalls = false)
-    .Build();
+ChatClient chatClient = openAIClient.GetChatClient(secrets.ModelId);
 
 await using McpClient gitHubMcpClient = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
 {

@@ -1,10 +1,10 @@
 ﻿#pragma warning disable MEAI001
 using OpenAI;
 using Microsoft.Agents.AI;
-using Microsoft.Extensions.AI;
 using Shared;
 using System.ClientModel;
 using Shared.Extensions;
+using OpenAI.Chat;
 
 Secrets secrets = SecretManager.GetSecrets();
 
@@ -17,7 +17,7 @@ var openAIClient = new OpenAIClient(
     }
 );
 
-IChatClient client = openAIClient.GetChatClient(secrets.ModelId).AsIChatClient();
+ChatClient client = openAIClient.GetChatClient(secrets.ModelId);
 
 string question = "What is the Capital of France and how many people live there?";
 

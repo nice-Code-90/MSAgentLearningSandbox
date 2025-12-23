@@ -6,6 +6,7 @@ using Shared;
 using System.ClientModel;
 using Shared.Extensions;
 using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
+using OpenAI.Chat;
 
 Secrets secrets = SecretManager.GetSecrets();
 string apiKey = secrets.CerebrasApiKey;
@@ -16,7 +17,7 @@ var openAIClient = new OpenAIClient(
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 
-IChatClient client = openAIClient.GetChatClient(modelId).AsIChatClient();
+ChatClient client = openAIClient.GetChatClient(modelId);
 
 ChatClientAgent agent = client.CreateCerebrasAgent(
     instructions: "You are a visual expert. Describe the content of the provided data carefully."
