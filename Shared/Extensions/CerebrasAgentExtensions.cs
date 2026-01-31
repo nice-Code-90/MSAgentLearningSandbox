@@ -19,10 +19,25 @@ public static class CerebrasAgentExtensions
         string? reasoningEffortLevel = null,
         ILoggerFactory? loggerFactory = null,
         IServiceProvider? services = null)
+    {
+        
+        return chatClient.AsIChatClient().CreateCerebrasAgent(
+            instructions, name, description, tools, maxTokens, reasoningEffortLevel, loggerFactory, services);
+    }
+    public static ChatClientAgent CreateCerebrasAgent(
+        this IChatClient chatClient,
+        string? instructions = null,
+        string? name = null,
+        string? description = null,
+        IList<AITool>? tools = null,
+        int? maxTokens = null,
+        string? reasoningEffortLevel = null,
+        ILoggerFactory? loggerFactory = null,
+        IServiceProvider? services = null)
 
     {
 
-        IChatClient adaptedClient = chatClient.AsIChatClient();
+        
 
         ChatOptions options = new()
         {
@@ -50,7 +65,7 @@ public static class CerebrasAgentExtensions
             ChatOptions = options
         };
 
-        return new ChatClientAgent(adaptedClient, clientAgentOptions, loggerFactory, services);
+        return new ChatClientAgent(chatClient, clientAgentOptions, loggerFactory, services);
     }
 
 
