@@ -10,7 +10,6 @@ using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 
 Secrets secrets = SecretManager.GetSecrets();
 
-
 OpenAIClient cerebrasClient = new OpenAIClient(
     new ApiKeyCredential(secrets.CerebrasApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
@@ -18,18 +17,19 @@ OpenAIClient cerebrasClient = new OpenAIClient(
 
 ChatClient chatClient = cerebrasClient.GetChatClient(secrets.ModelId);
 
-AIAgent summaryAgent = chatClient.CreateCerebrasAgent(
-    name: "SummaryAgent",
-    instructions: "Summarize the text you are given to max 20 words"
+AIAgent legalAgent = chatClient.CreateCerebrasAgent(
+    name: "LegalAgent",
+    instructions: "You are a legal agent that need to evaluate if a text is legal (use max 200 chars)"
 );
 
-AIAgent translationAgent = chatClient.CreateCerebrasAgent(
-    name: "TranslationAgent",
-    instructions: "Given a text Translate it to French (you need to translate the summary and not the original text)"
+AIAgent spellingErrorAgent = chatClient.CreateCerebrasAgent(
+    name: "SpellingErrorAgent",
+    instructions: "You are a spelling expert (use max 200 chars)"
 );
 
-Workflow workflow = AgentWorkflowBuilder.BuildSequential(summaryAgent, translationAgent);
+Workflow workflow = AgentWorkflowBuilder.BuildConcurrent([legalAgent, spellingErrorAgent]);
 
+// ReSharper disable once StringLiteralTypo
 string legalText = """
                     This Legal Disclaimer (“Agreement”) governs the ownership, maintenance, and care of domesticated ducks 
                     kept as personal pets. By acquiring or housing a duck, the Owner hereby acknowledges and agrees to 
@@ -39,13 +39,13 @@ string legalText = """
                     The Owner shall maintain sanitary standards to prevent odors, noise disturbance, or the spread of 
                     disease to neighboring properties. Local authorities reserve the right to inspect premises upon 
                     reasonable notice to ensure compliance. Any sale or transfer of pet ducks must include written 
-                    documentation verifying the animal's health status and vaccination records where required.
+                    documentation verifying the animal’s health status and vaccination records where required.
                     This Agreement does not confer any breeding or commercial rights unless expressly authorized in 
                     writing by the relevant agency. The Owner indemnifies and holds harmless all regulatory bodies 
                     against claims arising from damage or injury caused by said animals. Failure to adhere to the 
                     provisions herein may result in fines, forfeiture, or legal action.
                     Acceptance of a duck as a pet constitutes full consent to these terms and any subsequent 
-                    amendments or revisions adopted by the governing authority.
+                    amendmants or revisions adopted by the governing authority.
                     """;
 
 var messages = new List<ChatMessage> { new(ChatRole.User, legalText) };
@@ -63,11 +63,9 @@ await foreach (WorkflowEvent evt in run.WatchStreamAsync().ConfigureAwait(false)
     }
 }
 
-foreach (ChatMessage message in result.Where(x => x.Role != ChatRole.User))
+foreach (var message in result.Where(x => x.Role != ChatRole.User))
 {
     Utils.WriteLineGreen(message.AuthorName ?? "Unknown");
-
-
     Console.WriteLine($"{message.Text}");
     Utils.Separator();
 }

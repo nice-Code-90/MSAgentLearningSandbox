@@ -143,6 +143,28 @@
             "cwd": "${workspaceFolder}/Workflow.Sequential",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Workflow Concurrent",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-workflow-concurrent",
+            "program": "${workspaceFolder}/Workflow.Concurrent/bin/Debug/net10.0/Workflow.Concurrent.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Workflow.Concurrent",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Workflow Handoff",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-workflow-handoff",
+            "program": "${workspaceFolder}/Workflow.Handoff/bin/Debug/net10.0/Workflow.Handoff.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Workflow.Handoff",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }

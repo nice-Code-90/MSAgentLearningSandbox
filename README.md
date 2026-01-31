@@ -151,6 +151,28 @@ This project implements a classic two-stage pipeline where the output of the fir
 - **StreamingRun & WatchStreamAsync:** Event-driven monitoring of the entire process and processing intermediate results (events).
 - **Agent Specialization:** A "SummaryAgent" is responsible for logical compression, while a "TranslationAgent" handles language transformation.
 
+---
+
+### 14. Workflow.Concurrent (Multi-Perspective Analysis)
+This project demonstrates parallel agent execution. The same input data is analyzed simultaneously from multiple different perspectives (legal and spelling).
+
+**Key Concepts:**
+- **AgentWorkflowBuilder.BuildConcurrent:** Enables parallel execution of multiple agents. Results become available when all agents have finished.
+- **Separated Responsibility:** Agents are unaware of each other, focusing only on the source text.
+
+---
+
+### 15. MultiAgent.Handoff (Dynamic Routing)
+This project demonstrates the highest level of agent collaboration, where agents are capable of delegating tasks among themselves.
+
+**Key Concepts:**
+- **Dynamic Handoff:** Control transfer based on the agent's decision rather than a predefined sequence.
+- **HandoffBuilder:** A specialized builder within the framework that registers transfer possibilities between agents.
+- **Cerebras Hybrid Strategy:**
+    - **Router:** Qwen-2.5-32b for stable logical decisions and accurate delegation.
+    - **Experts:** Llama-3.3-70b for deep domain knowledge and rich responses.
+- **Context Continuity:** Conversation context is preserved during the handoff, ensuring the expert already knows what the user asked the router.
+
 
 ## Technical Insights & Learning Outcomes
 
@@ -195,6 +217,12 @@ Unlike Azure OpenAI (o1), where reasoning tokens are hidden metadata, **Qwen-3-3
 ### Stability Best Practices
 - **Sequential over Parallel:** Setting `AllowMultipleToolCalls = false` is critical on Cerebras to prevent malformed JSON responses during complex operations.
 - **Extended Timeouts:** Configuring `NetworkTimeout` to at least 5 minutes is mandatory, as reasoning models can take significant time before the first answer token appears.
+
+### Workflow Instance Lifecycle
+In the Microsoft Agent Framework, `Workflow` objects are **single-use**. They cannot be reused for multiple consecutive `RunAsync` calls.
+- **The Error:** Attempting to reuse a built `Workflow` instance throws an `InvalidOperationException` (Already Owned).
+- **The Pattern:** You must generate a new `Workflow` instance using `AgentWorkflowBuilder` for every single execution (e.g., each chat turn).
+- **Reusability:** While the workflow object is disposable, the `ChatClientAgent` instances themselves *can* be reused across multiple workflow builds without issues.
 
 ---
 
