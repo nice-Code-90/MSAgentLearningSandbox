@@ -25,7 +25,7 @@ ChatClientAgent agent = client.CreateCerebrasAgent(
 
 Scenario scenario = Scenario.Pdf; // Toggle this to test different inputs
 
-AgentRunResponse response;
+AgentResponse response;
 switch (scenario)
 {
     case Scenario.Text:
@@ -83,7 +83,7 @@ switch (scenario)
         break;
 }
 
-void ShowResponse(AgentRunResponse agentRunResponse)
+void ShowResponse(AgentResponse agentRunResponse)
 {
     string rawOutput = agentRunResponse.ToString();
     string cleanedOutput = rawOutput;

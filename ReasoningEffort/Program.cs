@@ -24,7 +24,7 @@ string question = "What is the Capital of France and how many people live there?
 ChatClientAgent agentDefault = client.CreateCerebrasAgent();
 
 Console.WriteLine("--- Approach 1: Default Reasoning ---");
-AgentRunResponse response1 = await agentDefault.RunAsync(question);
+AgentResponse response1 = await agentDefault.RunAsync(question);
 
 Console.WriteLine(response1.GetCleanContent());
 response1.Usage.OutputAsInformation(response1.ToString());
@@ -53,7 +53,7 @@ ChatClientAgent agentTokenLimit = client.CreateCerebrasAgent(
 );
 
 Console.WriteLine("--- Approach 3: Limited Reasoning (via Max Tokens) ---");
-AgentRunResponse response3 = await agentTokenLimit.RunAsync(question);
+AgentResponse response3 = await agentTokenLimit.RunAsync(question);
 
 Console.WriteLine(response3.GetCleanContent());
 response3.Usage.OutputAsInformation(response3.ToString());

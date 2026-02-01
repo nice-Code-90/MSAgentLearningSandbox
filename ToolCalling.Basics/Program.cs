@@ -16,7 +16,7 @@ var openAIClient = new OpenAIClient(
 
 ChatClientAgent agent = openAIClient
     .GetChatClient(secrets.ModelId)
-    .CreateAIAgent(
+    .AsAIAgent(
         instructions: "You are a Time Expert. Use the provided tools to answer questions about time and dates.",
         tools:
         [
@@ -25,8 +25,7 @@ ChatClientAgent agent = openAIClient
         ]
     );
 
-AgentThread thread = agent.GetNewThread();
-
+AgentSession session = await agent.GetNewSessionAsync();
 Console.WriteLine("--- Time Expert Agent Ready ---");
 Console.WriteLine("Try asking: 'What time is it?' or 'What is the current date?'");
 
@@ -38,7 +37,7 @@ while (true)
 
     ChatMessage message = new(ChatRole.User, input);
 
-    AgentRunResponse response = await agent.RunAsync(message, thread);
+    AgentResponse response = await agent.RunAsync(message, session);
 
     Console.WriteLine(response);
     Utils.Separator();

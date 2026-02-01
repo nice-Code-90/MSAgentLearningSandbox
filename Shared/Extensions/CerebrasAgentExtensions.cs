@@ -69,7 +69,7 @@ public static class CerebrasAgentExtensions
     }
 
 
-    public static string GetCleanContent(this AgentRunResponse response)
+    public static string GetCleanContent(this AgentResponse response)
     {
         string content = response.ToString();
 

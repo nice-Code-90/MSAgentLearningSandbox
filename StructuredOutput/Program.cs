@@ -40,10 +40,10 @@ string question = "What are the top 10 Movies according to IMDB?";
 // --- APPROACH 2: ChatClientAgent with Generic RunAsync (Automatic) ---
 // This is the cleanest way. By using ChatClientAgent, we can call the generic RunAsync<T>.
 // The framework handles the JSON schema generation and deserialization automatically.
-ChatClientAgent agent2 = client.CreateAIAgent(instructions: "You are an expert in IMDB Lists");
+ChatClientAgent agent2 = client.AsAIAgent(instructions: "You are an expert in IMDB Lists");
 
 Console.WriteLine("--- Approach 2: Structured Output (Generic) ---");
-AgentRunResponse<MovieResult> response2 = await agent2.RunAsync<MovieResult>(question);
+AgentResponse<MovieResult> response2 = await agent2.RunAsync<MovieResult>(question);
 
 // The 'Result' property is already a strongly-typed MovieResult object
 DisplayMovies(response2.Result);
@@ -59,13 +59,13 @@ JsonSerializerOptions jsonSerializerOptions = new()
     Converters = { new JsonStringEnumConverter() }
 };
 
-AIAgent agent3 = client.CreateAIAgent(instructions: "You are an expert in IMDB Lists");
+AIAgent agent3 = client.AsAIAgent(instructions: "You are an expert in IMDB Lists");
 
 // Explicitly define the response format using a JSON schema
 ChatResponseFormatJson chatResponseFormatJson = ChatResponseFormat.ForJsonSchema<MovieResult>(jsonSerializerOptions);
 
 Console.WriteLine("--- Approach 3: Explicit JSON Schema & Manual Deserialization ---");
-AgentRunResponse response3 = await agent3.RunAsync(question, options: new ChatClientAgentRunOptions()
+AgentResponse response3 = await agent3.RunAsync(question, options: new ChatClientAgentRunOptions()
 {
     ChatOptions = new ChatOptions
     {

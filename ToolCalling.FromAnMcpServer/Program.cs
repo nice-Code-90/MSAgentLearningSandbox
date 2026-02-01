@@ -47,7 +47,7 @@ AIAgent agent = chatClient.CreateCerebrasAgent(
 .Use(FunctionCallMiddleware)
 .Build();
 
-AgentThread thread = agent.GetNewThread();
+AgentSession session = await agent.GetNewSessionAsync();
 
 Console.WriteLine("--- GitHub MCP Expert Agent Ready (Cerebras) ---");
 
@@ -58,7 +58,7 @@ while (true)
     if (string.IsNullOrWhiteSpace(input) || input.ToLower() == "exit") break;
 
     ChatMessage message = new(ChatRole.User, input);
-    AgentRunResponse response = await agent.RunAsync(message, thread);
+    AgentResponse response = await agent.RunAsync(message, session);
 
     Console.WriteLine(response.GetCleanContent());
 

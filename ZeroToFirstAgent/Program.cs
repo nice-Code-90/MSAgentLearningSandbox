@@ -13,15 +13,14 @@ var openAIClient = new OpenAIClient(
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 
-ChatClientAgent agent = openAIClient.GetChatClient(modelId).CreateAIAgent();
+ChatClientAgent agent = openAIClient.GetChatClient(modelId).AsAIAgent();
 
-
-AgentRunResponse response = await agent.RunAsync("What is the Capital of Australia?");
+AgentResponse response = await agent.RunAsync("What is the Capital of Australia?");
 Console.WriteLine(response);
 
 Console.WriteLine("---");
 
-await foreach (AgentRunResponseUpdate update in agent.RunStreamingAsync("How to make soup?"))
+await foreach (AgentResponseUpdate update in agent.RunStreamingAsync("How to make soup?"))
 {
     Console.Write(update);
 }

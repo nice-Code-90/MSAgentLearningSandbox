@@ -15,18 +15,18 @@ var openAIClient = new OpenAIClient(
 
 var agent = openAIClient
     .GetChatClient(secrets.ModelId)
-    .CreateAIAgent(instructions: "You are a Friendly AI Bot, answering questions");
+    .AsAIAgent(instructions: "You are a Friendly AI Bot, answering questions");
 
-AgentThread thread;
+AgentSession session;
 const bool optionToResume = true;
 
 if (optionToResume)
 {
-    thread = await AgentThreadPersistence.ResumeChatIfRequestedAsync(agent);
+    session = await AgentThreadPersistence.ResumeChatIfRequestedAsync(agent);
 }
 else
 {
-    thread = agent.GetNewThread();
+    session = await agent.GetNewSessionAsync();
 }
 
 Console.WriteLine("--- Chat Started (Type 'exit' to stop) ---");
@@ -40,7 +40,7 @@ while (true)
 
     Microsoft.Extensions.AI.ChatMessage message = new(Microsoft.Extensions.AI.ChatRole.User, input);
 
-    await foreach (AgentRunResponseUpdate update in agent.RunStreamingAsync(message, thread))
+    await foreach (AgentResponseUpdate update in agent.RunStreamingAsync(message, session))
     {
         Console.Write(update);
     }
@@ -50,6 +50,6 @@ while (true)
 
     if (optionToResume)
     {
-        await AgentThreadPersistence.StoreThreadAsync(thread);
+        await AgentThreadPersistence.StoreThreadAsync(session);
     }
 }

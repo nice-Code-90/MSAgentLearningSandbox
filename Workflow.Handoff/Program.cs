@@ -65,21 +65,20 @@ static async Task<List<ChatMessage>> RunWorkflowAsync(Workflow workflow, List<Ch
     {
         switch (@event)
         {
-            case AgentRunUpdateEvent e:
+            case AgentResponseEvent e:
                 {
                     if (e.ExecutorId != lastExecutorId)
                     {
                         lastExecutorId = e.ExecutorId;
                         Console.WriteLine();
-                        Utils.WriteLineGreen($"[{e.Update.AuthorName ?? e.ExecutorId}]");
-                    }
+                        Utils.WriteLineGreen($"[{e.ExecutorId}]");                    }
 
-                    if (!string.IsNullOrEmpty(e.Update.Text))
+                    if (!string.IsNullOrEmpty(e.Response.Text))
                     {
-                        Console.Write(e.Update.Text);
+                        Console.Write(e.Response.Text);
                     }
 
-                    if (e.Update.Contents.OfType<FunctionCallContent>().FirstOrDefault() is FunctionCallContent call)
+                    if (e.Response.Messages.SelectMany(m => m.Contents).OfType<FunctionCallContent>().FirstOrDefault() is FunctionCallContent call)
                     {
                         Console.WriteLine();
                         Utils.WriteLineDarkGray($"[Action: {call.Name}]");

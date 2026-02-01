@@ -67,7 +67,7 @@ var delegationAgent = chatClient
     .Build();
 
 
-AgentRunResponse responseFromDelegate = await delegationAgent.RunAsync("Uppercase 'Hello World'");
+AgentResponse responseFromDelegate = await delegationAgent.RunAsync("Uppercase 'Hello World'");
 Console.WriteLine(responseFromDelegate.GetCleanContent());
 responseFromDelegate.Usage.OutputAsInformation();
 
@@ -92,7 +92,7 @@ var jackOfAllTradesAgent = chatClient
     .Use(FunctionCallMiddleware)
     .Build();
 
-AgentRunResponse responseFromJackOfAllTrade = await jackOfAllTradesAgent.RunAsync("Uppercase 'Hello World'");
+AgentResponse responseFromJackOfAllTrade = await jackOfAllTradesAgent.RunAsync("Uppercase 'Hello World'");
 Console.WriteLine(responseFromJackOfAllTrade.GetCleanContent());
 responseFromJackOfAllTrade.Usage.OutputAsInformation();
 

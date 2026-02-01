@@ -24,7 +24,7 @@ listOfTools.Add(new ApprovalRequiredAIFunction(AIFunctionFactory.Create(Dangerou
 
 AIAgent agent = openAIClient
     .GetChatClient(secrets.ModelId)
-    .CreateAIAgent(
+    .AsAIAgent(
         instructions: $"You are a File Expert. Workspace: {target.GetRootFolder()}",
         tools: listOfTools
     )
@@ -32,7 +32,7 @@ AIAgent agent = openAIClient
     .Use(FunctionCallMiddleware)
     .Build();
 
-AgentThread thread = agent.GetNewThread();
+AgentSession session = await agent.GetNewSessionAsync();
 Console.WriteLine("--- Advanced File Expert Agent Ready (Cerebras) ---");
 
 while (true)
@@ -42,7 +42,7 @@ while (true)
     if (string.IsNullOrWhiteSpace(input) || input.ToLower() == "exit") break;
 
     ChatMessage message = new(ChatRole.User, input);
-    AgentRunResponse response = await agent.RunAsync(message, thread);
+    AgentResponse response = await agent.RunAsync(message, session);
 
     List<UserInputRequestContent> userInputRequests = response.UserInputRequests.ToList();
     while (userInputRequests.Count > 0)
@@ -57,7 +57,7 @@ while (true)
                 return new ChatMessage(ChatRole.User, [req.CreateResponse(approved)]);
             }).ToList();
 
-        response = await agent.RunAsync(userInputResponses, thread);
+        response = await agent.RunAsync(userInputResponses, session);
         userInputRequests = response.UserInputRequests.ToList();
     }
 

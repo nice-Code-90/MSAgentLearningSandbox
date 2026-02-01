@@ -44,7 +44,7 @@ switch (intentResult.Intent)
             name: "MusicNerd",
             instructions: "You are a Music Nerd answering questions. Keep your answer under 200 characters. Be concise and accurate."
         );
-        AgentRunResponse responseFromMusicNerd = await musicNerdAgent.RunAsync(question);
+        AgentResponse responseFromMusicNerd = await musicNerdAgent.RunAsync(question);
         Console.WriteLine(responseFromMusicNerd.GetCleanContent());
         break;
 
@@ -54,7 +54,7 @@ switch (intentResult.Intent)
             name: "MovieNerd",
             instructions: "You are a Movie Nerd answering questions. Keep your answer under 200 characters. Be concise and accurate."
         );
-        AgentRunResponse responseFromMovieNerd = await movieNerdAgent.RunAsync(question);
+        AgentResponse responseFromMovieNerd = await movieNerdAgent.RunAsync(question);
         Console.WriteLine(responseFromMovieNerd.GetCleanContent());
         break;
 
@@ -64,7 +64,7 @@ switch (intentResult.Intent)
             name: "GeneralAssistant",
             instructions: "Answer the user's question concisely and accurately. Keep your answer under 200 characters."
         );
-        AgentRunResponse otherResponse = await generalAgent.RunAsync(question);
+        AgentResponse otherResponse = await generalAgent.RunAsync(question);
         Console.WriteLine(otherResponse.GetCleanContent());
         break;
 
@@ -73,7 +73,7 @@ switch (intentResult.Intent)
         ChatClientAgent fallbackAgent = answerChatClient.CreateCerebrasAgent(
             instructions: "Answer the user's question concisely and accurately."
         );
-        AgentRunResponse fallbackResponse = await fallbackAgent.RunAsync(question);
+        AgentResponse fallbackResponse = await fallbackAgent.RunAsync(question);
         Console.WriteLine(fallbackResponse.GetCleanContent());
         break;
 }

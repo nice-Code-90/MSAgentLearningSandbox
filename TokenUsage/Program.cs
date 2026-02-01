@@ -14,25 +14,25 @@ var openAIClient = new OpenAIClient(
 
 ChatClientAgent agent = openAIClient
     .GetChatClient(secrets.ModelId)
-    .CreateAIAgent(instructions: "You are a helpful assistant.");
+    .AsAIAgent(instructions: "You are a helpful assistant.");
 
 string question = "What is the capital of France and how many people live there?";
 
-AgentRunResponse response = await agent.RunAsync(question);
+AgentResponse response = await agent.RunAsync(question);
 Console.WriteLine(response);
 
 response.Usage.OutputAsInformation();
 
 Utils.Separator();
-List<AgentRunResponseUpdate> updates = [];
-await foreach (AgentRunResponseUpdate update in agent.RunStreamingAsync(question))
+List<AgentResponseUpdate> updates = [];
+await foreach (AgentResponseUpdate update in agent.RunStreamingAsync(question))
 {
     updates.Add(update);
     Console.Write(update);
 }
 Console.WriteLine();
 
-AgentRunResponse collectedResponseFromStreaming = updates.ToAgentRunResponse();
+AgentResponse collectedResponseFromStreaming = updates.ToAgentResponse();
 collectedResponseFromStreaming.Usage.OutputAsInformation();
 
 Utils.Separator();
