@@ -16,11 +16,9 @@ public class MovieVectorStoreRecord
     [VectorStoreData]
     public required decimal Rating { get; set; }
 
-    [VectorStoreVector(1536, DistanceFunction = DistanceFunction.CosineSimilarity, IndexKind = IndexKind.Hnsw)]
-    public string? Embedding => $"Title: {Title} - Rating: {Rating} - Plot: {Plot}";
+    // JAVÍTÁS: Read-only string helyett írható ReadOnlyMemory<float>
+    [VectorStoreVector(384, DistanceFunction = DistanceFunction.CosineSimilarity, IndexKind = IndexKind.Hnsw)]
+    public ReadOnlyMemory<float>? Embedding { get; set; }
 
-    public string GetTitleAndDetails()
-    {
-        return $"Title: {Title} - Rating: {Rating} - Plot: {Plot}";
-    }
+    public string GetTitleAndDetails() => $"Title: {Title} - Rating: {Rating} - Plot: {Plot}";
 }

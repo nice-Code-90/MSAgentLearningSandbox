@@ -217,6 +217,29 @@ This project explores the extensive configuration surface of the `ChatClientAgen
 - **Observability:** Integrating OpenTelemetry to trace agent activities and performance in a standardized way.
 - **Client Factories:** Utilizing the `clientFactory` delegate to wrap or customize the underlying `IChatClient` (e.g., adding a `ConfigureOptionsChatClient` to force specific LLM parameters).
 
+### 17. RAG.LocalEmbeddings (High-Performance Movie Expert)
+
+This project implements a production-grade RAG (Retrieval-Augmented Generation) pattern that combines local, high-speed vectorization with cloud-based reasoning. It is designed as a template for low-latency, privacy-focused semantic search.
+
+**Key Concepts:**
+
+- **Local ONNX Embedding:** Custom `IEmbeddingGenerator` implementation using `Microsoft.ML.OnnxRuntime`.
+- **Specific Model: all-MiniLM-L6-v2:** The project utilizes the Sentence-Transformers all-MiniLM-L6-v2 model exported to ONNX format.
+  - **Architecture:** A distilled version of BERT, optimized for sentence embeddings.
+  - **Dimensions:** 384-dimensional dense vectors.
+  - **Sequence Length:** Supports up to 256 tokens.
+  - **Efficiency:** Provides a 5x speedup over larger models with minimal loss in retrieval accuracy for general-purpose text.
+- **MEVD (Microsoft Extensions Vector Data):** Utilizing the latest .NET 10 abstractions, specifically the `VectorStoreCollection` abstract base class.
+- **Hybrid RAG Flow:** Semantic search is performed locally in memory, passing only the most relevant results to Cerebras for final processing.
+
+**Technical Specifications (for LLM Context):**
+
+- **Embedding Provider:** Local ONNX Runtime.
+- **Model ID:** `sentence-transformers/all-MiniLM-L6-v2`.
+- **Output Vector Size:** 384.
+- **Distance Metric:** Cosine Similarity (defined in `MovieVectorStoreRecord`).
+- **Required Files:** `model.onnx` (weights) and `vocab.txt` (WordPiece tokenizer vocabulary).
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -278,6 +301,14 @@ In the Microsoft Agent Framework, `Workflow` objects are **single-use**. They ca
 - **The Error:** Attempting to reuse a built `Workflow` instance throws an `InvalidOperationException` (Already Owned).
 - **The Pattern:** You must generate a new `Workflow` instance using `AgentWorkflowBuilder` for every single execution (e.g., each chat turn).
 - **Reusability:** While the workflow object is disposable, the `ChatClientAgent` instances themselves _can_ be reused across multiple workflow builds without issues.
+
+### Local vs. Remote Embeddings (The Latency Win)
+
+Development proved that combining local ONNX embedding generation with Cerebras’ extreme inference speed creates a RAG experience where total response time is often lower than the time a traditional cloud provider takes just to generate vectors.
+
+### The MEVD Abstract Base Class Pattern
+
+In the .NET 10 AI ecosystem, the shift from interfaces (like `IVectorStoreRecordCollection`) to abstract base classes (`VectorStoreCollection`) provides more stable type-tracking and better default behavior but requires updating older Semantic Kernel documentation patterns.
 
 ---
 
