@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Handoff", "Workflo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingsOnAiAgent", "SettingsOnAiAgent\SettingsOnAiAgent.csproj", "{8A235DD3-77DD-4B76-A260-6AEC8B42FA68}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsingRAGInAgentFramework", "UsingRAGInAgentFramework\UsingRAGInAgentFramework.csproj", "{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +253,18 @@ Global
 		{8A235DD3-77DD-4B76-A260-6AEC8B42FA68}.Release|x64.Build.0 = Release|Any CPU
 		{8A235DD3-77DD-4B76-A260-6AEC8B42FA68}.Release|x86.ActiveCfg = Release|Any CPU
 		{8A235DD3-77DD-4B76-A260-6AEC8B42FA68}.Release|x86.Build.0 = Release|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Debug|x64.Build.0 = Debug|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Debug|x86.Build.0 = Debug|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Release|x64.ActiveCfg = Release|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Release|x64.Build.0 = Release|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Release|x86.ActiveCfg = Release|Any CPU
+		{DE9C5897-55A4-4C7E-AA8A-F4C05A28557A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
