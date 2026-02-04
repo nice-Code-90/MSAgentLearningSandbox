@@ -23,7 +23,7 @@ OpenAIClient cerebrasClient = new(
 ChatClient chatClient = cerebrasClient.GetChatClient(secrets.ModelId);
 
 ChatClientAgent noSettingAgent = chatClient.AsIChatClient().CreateCerebrasAgent();
-ChatClientAgent surferAgent = chatClient.AsIChatClient().CreateCerebrasAgent(  
+ChatClientAgent surferAgent = chatClient.AsIChatClient().CreateCerebrasAgent(
     instructions: "You are a cool surfer dude",
     name: "SurferAgent"
 );
@@ -53,7 +53,6 @@ AIAgent agentWithAllSettings = chatClient.AsIChatClient().CreateCerebrasAgent(
     .UseOpenTelemetry(sourceName)
     .Build();
 
-// 6. Execute and Display
 var response = await agentWithAllSettings.RunAsync("What is the capital of France?");
 
 Console.WriteLine("Raw Response:");
@@ -77,7 +76,7 @@ ChatClientAgent advancedAgent = new ChatClientAgent(
         ChatOptions = new ChatOptions
         {
             Instructions = "Speak like a scientist",
-            Temperature = 0.1f 
+            Temperature = 0.1f
         }
     },
     LoggerFactory.Create(lb => lb.AddConsole()),

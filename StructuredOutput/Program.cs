@@ -45,7 +45,7 @@ ChatClientAgent agent2 = client.AsAIAgent(instructions: "You are an expert in IM
 Console.WriteLine("--- Approach 2: Structured Output (Generic) ---");
 AgentResponse<MovieResult> response2 = await agent2.RunAsync<MovieResult>(question);
 
-// The 'Result' property is already a strongly-typed MovieResult object
+
 DisplayMovies(response2.Result);
 
 Utils.Separator();
@@ -61,7 +61,7 @@ JsonSerializerOptions jsonSerializerOptions = new()
 
 AIAgent agent3 = client.AsAIAgent(instructions: "You are an expert in IMDB Lists");
 
-// Explicitly define the response format using a JSON schema
+
 ChatResponseFormatJson chatResponseFormatJson = ChatResponseFormat.ForJsonSchema<MovieResult>(jsonSerializerOptions);
 
 Console.WriteLine("--- Approach 3: Explicit JSON Schema & Manual Deserialization ---");
@@ -73,11 +73,9 @@ AgentResponse response3 = await agent3.RunAsync(question, options: new ChatClien
     }
 });
 
-// Deserialize the raw response into our C# model
 MovieResult movieResult3 = response3.Deserialize<MovieResult>(jsonSerializerOptions);
 DisplayMovies(movieResult3);
 
-// Helper method to print the movie list
 void DisplayMovies(MovieResult movieResult)
 {
     if (movieResult == null) return;

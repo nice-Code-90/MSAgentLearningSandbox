@@ -25,7 +25,6 @@ public static class EnhanceDataEmbedding
             var genreRes = await genreAgent.RunAsync($"Determine genre for: {movie.Title} - {movie.Plot}");
             string genre = genreRes.GetCleanContent().Trim();
 
-            // Helyi embedding generálás
             var embeddingResult = await generator.GenerateAsync([movie.GetTitleAndDetails()]);
 
             await collection.UpsertAsync(new MovieVectorStoreRecord

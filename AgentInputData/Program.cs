@@ -23,7 +23,7 @@ ChatClientAgent agent = client.CreateCerebrasAgent(
     instructions: "You are a visual expert. Describe the content of the provided data carefully."
 );
 
-Scenario scenario = Scenario.Pdf; // Toggle this to test different inputs
+Scenario scenario = Scenario.Pdf;
 
 AgentResponse response;
 switch (scenario)

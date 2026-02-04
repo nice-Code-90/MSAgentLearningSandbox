@@ -7,12 +7,10 @@ namespace AdvancedRAGTechniques.EmbeddingOptions;
 public static class OriginalEmbedding
 {
     public static async Task Embed(
-        // JAVÍTÁS: A típus neve itt is a hosszú változat
         SqliteCollection<Guid, MovieVectorStoreRecord> collection,
         Movie[] movieData,
         OnnxLocalEmbeddingGenerator generator)
     {
-        // JAVÍTÁS: SQLite-specifikus metódusnév
         await collection.EnsureCollectionExistsAsync();
 
         int counter = 0;
