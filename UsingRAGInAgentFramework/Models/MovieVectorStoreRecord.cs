@@ -16,7 +16,7 @@ public class MovieVectorStoreRecord
     [VectorStoreData]
     public required decimal Rating { get; set; }
 
-    // JAVÍTÁS: Read-only string helyett írható ReadOnlyMemory<float>
+    
     [VectorStoreVector(384, DistanceFunction = DistanceFunction.CosineSimilarity, IndexKind = IndexKind.Hnsw)]
     public ReadOnlyMemory<float>? Embedding { get; set; }
 
