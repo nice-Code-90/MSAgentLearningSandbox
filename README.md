@@ -256,6 +256,17 @@ This project makes the communication exchange visible at the network layer. It d
 - **Observability:** Inspecting Cerebras-specific JSON metadata (such as `time_info` and precise response timings) that are not always available in standard framework objects.
 - **Stable Token Estimation:** A fallback logic in `UsageDetailsExtensions` that estimates reasoning tokens from the message text when the SDK bridge fails to map them.
 
+### 20. ChatHistory.Reducers (Context Optimization)
+
+This project demonstrates how to keep costs and the model context window under control during long conversations without the agent losing the thread.
+
+**Key Concepts:**
+
+- **IChatReducer Interface:** The framework's abstraction for filtering and compressing conversation history.
+- **MessageCountingChatReducer (The "Raw Cutoff"):** A simple counter-based technique that ruthlessly deletes the oldest messages when the `targetCount` is reached.
+- **SummarizingChatReducer (The "Intelligent Memory"):** A more advanced approach where the agent summarizes old messages via a background call, preserving important facts (e.g., the user's name) while consuming fewer tokens.
+- **ChatHistoryProviderFactory:** The agent's configuration point where we inject the chosen reduction strategy into the agent's lifecycle using `InMemoryChatHistoryProvider`.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -335,6 +346,18 @@ During development, it was discovered that the current preview versions of `Micr
   1. **Direct Mapping:** The system first attempts to find the data in the official `AdditionalCounts` dictionary using known keys (e.g., `reasoning_tokens`).
   2. **Stable Estimation:** If the API reports 0 (a common occurrence with the current Cerebras/OpenAI bridge), the system falls back to a word-count-based estimation.
   3. **The Formula:** By applying a `word_count * 1.33` multiplier to the text found inside `<think>` tags, we achieve a remarkably stable approximation (~8% error margin) of the actual token count.
+
+### Raw Storage vs. Reduced Context
+
+An important realization during development was that the `session.GetService<IList<ChatMessage>>()` call returns the raw, full history, while the agent sends the list trimmed by the Reducer to the Cerebras API in the background. This explains why more messages are visible in local memory than what the model actually "sees" at the moment of the call.
+
+### The "Amnesia" Risk of Counting
+
+When using `MessageCountingChatReducer`, if the `targetCount` is too low, the agent may fall into "amnesia". Since the counter is not content-aware, it might delete the user's introduction, leading to contradictory responses (e.g., the agent sees your name in its own previous answers but no longer knows where the information comes from, causing uncertainty).
+
+### Summarization Performance on Cerebras
+
+The `SummarizingChatReducer` requires an extra LLM call to generate the summary. Due to Cerebras' extreme low latency, this process is practically imperceptible to the end-user, while it can drastically reduce the number of input tokens (by up to 60-80%) in later stages of the conversation.
 
 ---
 
