@@ -1,6 +1,6 @@
 namespace Workflow.AiAssisted.PizzaSample.Models;
 
-enum WarningType
+public enum WarningType
 {
     OutOfIngredient
 }

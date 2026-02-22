@@ -32,7 +32,7 @@ AIAgent agent = openAIClient
     .Use(FunctionCallMiddleware)
     .Build();
 
-AgentSession session = await agent.GetNewSessionAsync();
+AgentSession session = await agent.CreateSessionAsync();
 Console.WriteLine("--- Advanced File Expert Agent Ready (Cerebras) ---");
 
 while (true)
@@ -44,7 +44,7 @@ while (true)
     ChatMessage message = new(ChatRole.User, input);
     AgentResponse response = await agent.RunAsync(message, session);
 
-    List<UserInputRequestContent> userInputRequests = response.UserInputRequests.ToList();
+    List<FunctionApprovalRequestContent> userInputRequests = response.Messages.SelectMany(x => x.Contents).OfType<FunctionApprovalRequestContent>().ToList();
     while (userInputRequests.Count > 0)
     {
         List<ChatMessage> userInputResponses = userInputRequests
@@ -58,7 +58,7 @@ while (true)
             }).ToList();
 
         response = await agent.RunAsync(userInputResponses, session);
-        userInputRequests = response.UserInputRequests.ToList();
+        userInputRequests = response.Messages.SelectMany(x => x.Contents).OfType<FunctionApprovalRequestContent>().ToList();
     }
 
     Console.WriteLine(response.GetCleanContent());

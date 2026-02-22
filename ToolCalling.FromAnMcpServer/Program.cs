@@ -47,7 +47,7 @@ AIAgent agent = chatClient.CreateCerebrasAgent(
 .Use(FunctionCallMiddleware)
 .Build();
 
-AgentSession session = await agent.GetNewSessionAsync();
+AgentSession session = await agent.CreateSessionAsync();
 
 Console.WriteLine("--- GitHub MCP Expert Agent Ready (Cerebras) ---");
 

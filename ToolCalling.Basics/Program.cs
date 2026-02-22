@@ -25,7 +25,7 @@ ChatClientAgent agent = openAIClient
         ]
     );
 
-AgentSession session = await agent.GetNewSessionAsync();
+AgentSession session = await agent.CreateSessionAsync();
 Console.WriteLine("--- Time Expert Agent Ready ---");
 Console.WriteLine("Try asking: 'What time is it?' or 'What is the current date?'");
 

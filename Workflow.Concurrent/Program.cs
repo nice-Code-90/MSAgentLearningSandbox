@@ -50,7 +50,7 @@ string legalText = """
 
 var messages = new List<ChatMessage> { new(ChatRole.User, legalText) };
 
-StreamingRun run = await InProcessExecution.StreamAsync(workflow, messages);
+StreamingRun run = await InProcessExecution.RunStreamingAsync(workflow, messages);
 await run.TrySendMessageAsync(new TurnToken(emitEvents: true));
 
 List<ChatMessage> result = [];

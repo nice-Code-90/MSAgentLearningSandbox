@@ -26,7 +26,7 @@ if (optionToResume)
 }
 else
 {
-    session = await agent.GetNewSessionAsync();
+    session = await agent.CreateSessionAsync();
 }
 
 Console.WriteLine("--- Chat Started (Type 'exit' to stop) ---");
@@ -50,6 +50,6 @@ while (true)
 
     if (optionToResume)
     {
-        await AgentThreadPersistence.StoreThreadAsync(session);
+        await AgentThreadPersistence.StoreThreadAsync(agent, session);
     }
 }

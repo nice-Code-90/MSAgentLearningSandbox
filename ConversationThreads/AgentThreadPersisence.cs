@@ -24,7 +24,7 @@ public static class AgentThreadPersistence
             }
         }
 
-        return await agent.GetNewSessionAsync();   
+        return await agent.CreateSessionAsync();   
     }
 
 private static async Task RestoreConsole(AgentSession resumedSession)
@@ -50,9 +50,11 @@ private static async Task RestoreConsole(AgentSession resumedSession)
         }
     }
 
-    public static async Task StoreThreadAsync(AgentSession session)
+    public static async Task StoreThreadAsync(ChatClientAgent agent, AgentSession session)
     {
-        JsonElement serializedSession = session.Serialize();
+        
+        JsonElement serializedSession = await agent.SerializeSessionAsync(session);
+
         await File.WriteAllTextAsync(ConversationPath, JsonSerializer.Serialize(serializedSession));
     }
 }

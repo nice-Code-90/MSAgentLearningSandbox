@@ -31,13 +31,14 @@ ChatClientAgent agent = new ChatClientAgent(
         {
             Instructions = "You are a helpful assistant that remembers details, but efficiently."
         },
-        ChatHistoryProviderFactory = (context, token) =>
-            ValueTask.FromResult<ChatHistoryProvider>(
-                new InMemoryChatHistoryProvider(summaryReducer, context.SerializedState, context.JsonSerializerOptions))
+        ChatHistoryProvider = new InMemoryChatHistoryProvider(new InMemoryChatHistoryProviderOptions
+        {
+            ChatReducer = summaryReducer
+        })
     }
 );
 
-AgentSession session = await agent.GetNewSessionAsync();
+AgentSession session = await agent.CreateSessionAsync();
 
 Utils.WriteLineGreen($"***Start Cerebras Agent ({secrets.ModelId}) ***");
 Utils.WriteLineYellow("Try it: Say your name, then ask lots of questions to see the reduction!");
