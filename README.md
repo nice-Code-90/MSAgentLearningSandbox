@@ -278,6 +278,18 @@ This project explores the **Agent-to-Agent (A2A)** protocol, a standard for cros
 - **ASP.NET Core Hosting:** Using `MapA2A` and `MapWellKnownAgentCard` to host an agent as a web service.
 - **Cross-Process Execution:** Demonstrating the flow between a Server process (hosting FileTools) and a Client process (orchestrating user intent) using Cerebras for high-speed reasoning.
 
+### 22. MultiAgent.AgUI (Frontend-Backend Interaction)
+
+This project explores the **Agent User Interaction (AG-UI)** protocol, a specialized communication standard designed to bridge the gap between AI backends and interactive frontends (e.g., Blazor, React, or Console UIs). It solves the complex problem of managing real-time streaming and client-side capability exposure over standard HTTP.
+
+**Key Concepts:**
+
+- **Decoupled Architecture:** Separating the "Brain" (Backend Agent) from the "Interface" (Frontend Client) using a standardized protocol instead of custom, fragile WebSockets or Server-Side Events (SSE) implementations.
+- **Client-Side Tool Execution:** A revolutionary pattern where the frontend can expose its own local functions (e.g., `ChangeUIColor`) to a remote backend agent. The agent "sees" these as available tools, and the protocol handles the round-trip execution automatically.
+- **AgUI Chat Client Proxy:** Implementing a specialized client that acts as a proxy, forwarding user messages and tool definitions to the server without requiring API keys or LLM credentials on the frontend.
+- **Streaming over HTTP:** Simplified handling of real-time token streaming and UI updates using the built-in AG-UI event stream.
+- **Proxy Agent Constraints:** Understanding the "Shell" nature of AgUI proxy agents, where the client must manually manage conversation threads and system instructions during the current preview phase.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -369,6 +381,14 @@ When using `MessageCountingChatReducer`, if the `targetCount` is too low, the ag
 ### Summarization Performance on Cerebras
 
 The `SummarizingChatReducer` requires an extra LLM call to generate the summary. Due to Cerebras' extreme low latency, this process is practically imperceptible to the end-user, while it can drastically reduce the number of input tokens (by up to 60-80%) in later stages of the conversation.
+
+### The AG-UI Advantage: UI as a Tool
+
+Project 22 highlights a paradigm shift: the UI is no longer just a display for the agent, but a set of tools the agent can manipulate.
+
+- **Frontend Capabilities:** Traditionally, agents could only call backend APIs or local code. With AG-UI, an agent can decide to "Change the background to yellow" by invoking a tool that exists only on the user's machine.
+- **Simplified Security:** Because the client only needs the server's URL, sensitive Cerebras or OpenAI API keys remain securely on the backend. This makes it ideal for public-facing AI applications.
+- **Interactive Progress Monitoring:** Unlike raw SSE, AG-UI provides structured events for function calls and results, allowing the frontend to show "Thinking..." or "Calling Weather API..." indicators with minimal effort.
 
 ---
 
