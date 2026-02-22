@@ -4,7 +4,6 @@ This repository documents my journey exploring the **Microsoft Agent Framework**
 
 > **Acknowledgement:** This repository is inspired by and adapted from [rwjdk/MicrosoftAgentFrameworkSamples](https://github.com/rwjdk/MicrosoftAgentFrameworkSamples). The samples here are rewritten to utilize **Cerebras Inference** with high-performance models.
 
-
 ## Projects
 
 ### 1. ZeroToFirstAgent
@@ -266,6 +265,18 @@ This project demonstrates how to keep costs and the model context window under c
 - **MessageCountingChatReducer (The "Raw Cutoff"):** A simple counter-based technique that ruthlessly deletes the oldest messages when the `targetCount` is reached.
 - **SummarizingChatReducer (The "Intelligent Memory"):** A more advanced approach where the agent summarizes old messages via a background call, preserving important facts (e.g., the user's name) while consuming fewer tokens.
 - **ChatHistoryProviderFactory:** The agent's configuration point where we inject the chosen reduction strategy into the agent's lifecycle using `InMemoryChatHistoryProvider`.
+
+### 21. MultiAgent.A2A (Remote Agent-as-a-Tool)
+
+This project explores the **Agent-to-Agent (A2A)** protocol, a standard for cross-agent communication. It demonstrates a distributed architecture where a local "Manager" agent discovers and invokes a remote "Specialist" agent over the network.
+
+**Key Concepts:**
+
+- **Agent Card:** Using `AgentCard` to publish an agent's "business card"—defining its name, version, and specialized skills via a well-known JSON endpoint.
+- **Remote Discovery:** Implementing `A2ACardResolver` to dynamically discover and instantiate a remote `AIAgent` from a URI.
+- **Network Transparency:** Wrapping a remote agent as a local tool using `remoteAgent.AsAIFunction()`, allowing the client to delegate tasks without knowing the underlying implementation.
+- **ASP.NET Core Hosting:** Using `MapA2A` and `MapWellKnownAgentCard` to host an agent as a web service.
+- **Cross-Process Execution:** Demonstrating the flow between a Server process (hosting FileTools) and a Client process (orchestrating user intent) using Cerebras for high-speed reasoning.
 
 ## Technical Insights & Learning Outcomes
 
