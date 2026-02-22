@@ -290,6 +290,17 @@ This project explores the **Agent User Interaction (AG-UI)** protocol, a special
 - **Streaming over HTTP:** Simplified handling of real-time token streaming and UI updates using the built-in AG-UI event stream.
 - **Proxy Agent Constraints:** Understanding the "Shell" nature of AgUI proxy agents, where the client must manually manage conversation threads and system instructions during the current preview phase.
 
+### 23. DevUI.Intro (Visualizing Agents & Workflows)
+
+This project demonstrates the usage of **DevUI**, an ASP.NET Core-based developer interface for real-time testing and visualization of agents and workflows.
+
+**Key Concepts:**
+
+- **Developer Dashboard:** Activating the `MapDevUI` endpoint, which provides a local web interface for chatting with agents and monitoring the system's internal state.
+- **OpenAI Protocol Bridge:** Registering the `AddOpenAIResponses` and `AddOpenAIConversations` services, enabling the framework to communicate with DevUI in a standardized manner.
+- **Workflow Visualization:** Graphical representation of sequential and concurrent workflows, allowing live tracking of which agent is currently working on a specific task.
+- **Agent Registry Integration:** Demonstrating how to register different types of agents (simple "dummy" agents or complex `AIAgent` instances) into the central DI container, making them available in the dropdown menu.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
