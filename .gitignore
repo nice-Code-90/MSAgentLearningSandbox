@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 # Application secrets
 appsettings.Local.json
+
+**/wwwroot/lib/

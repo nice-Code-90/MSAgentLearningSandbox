@@ -1,0 +1,6 @@
+@AgentUserInteraction.Advanced.Server_HostAddress = http://localhost:5066
+
+GET {{AgentUserInteraction.Advanced.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
