@@ -301,6 +301,18 @@ This project demonstrates the usage of **DevUI**, an ASP.NET Core-based develope
 - **Workflow Visualization:** Graphical representation of sequential and concurrent workflows, allowing live tracking of which agent is currently working on a specific task.
 - **Agent Registry Integration:** Demonstrating how to register different types of agents (simple "dummy" agents or complex `AIAgent` instances) into the central DI container, making them available in the dropdown menu.
 
+### 24. MultiAgent.AgUI.Advanced (Frontend-Backend Orchestration)
+
+This project explores the advanced implementation of the Agentic User Interaction (AG-UI) protocol, moving beyond simple chat to handle complex, distributed agentic workflows between a Blazor WebAssembly frontend and a .NET Backend.
+
+**Key Concepts:**
+
+- **Streaming-by-Default Architecture:** A critical discovery in the AG-UI protocol is that everything is a stream. Even if the client calls `RunAsync`, the framework transparently converts it to `RunStreamingAsync` behind the scenes.
+- **Client-Side Capability Injection:** The frontend (Blazor) can expose its own local functions (like `ChangeColor`) as tools. The backend agent "sees" these tools and can invoke them across the network to manipulate the user interface directly.
+- **Structured Output "Hoops":** Standard structured output (returning a C# object) is not natively supported in AG-UI's default streaming mode. This project implements a Custom Agent Wrapper that intercepts tool results and packages them into `DataContent` objects within the stream.
+- **Credential-Free Frontend:** By using the AG-UI proxy, the frontend requires no API keys or LLM credentials. All sensitive authentication (Cerebras keys) remains securely on the backend server.
+- **Aspire Orchestration:** Utilizes the .NET Aspire AppHost to manage the complex networking and port synchronization between the server and the WASM client.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -400,6 +412,18 @@ Project 22 highlights a paradigm shift: the UI is no longer just a display for t
 - **Frontend Capabilities:** Traditionally, agents could only call backend APIs or local code. With AG-UI, an agent can decide to "Change the background to yellow" by invoking a tool that exists only on the user's machine.
 - **Simplified Security:** Because the client only needs the server's URL, sensitive Cerebras or OpenAI API keys remain securely on the backend. This makes it ideal for public-facing AI applications.
 - **Interactive Progress Monitoring:** Unlike raw SSE, AG-UI provides structured events for function calls and results, allowing the frontend to show "Thinking..." or "Calling Weather API..." indicators with minimal effort.
+
+### The "RunAsync" Illusion in AG-UI
+
+One of the most significant findings is that in the AG-UI protocol, the standard `RunAsync` method with a typed object result will not work as expected. The protocol will ignore the requested object format and return a standard text stream. To achieve structured output, you must:
+
+1. Override `RunStreamingAsync` in a custom `AIAgent` class.
+2. Manually capture function tool outputs.
+3. `yield return` a `DataContent` object containing the JSON-serialized result.
+
+### Client-Side Tool Execution
+
+Traditional agents are limited to calling backend APIs. AG-UI turns the UI into a toolset. When an agent decides to "change the background to red," it isn't sending a command; it is executing a tool that exists only on the client's machine. This allows for highly interactive "AI-driven" interfaces where the agent has direct agency over the DOM.
 
 ---
 
