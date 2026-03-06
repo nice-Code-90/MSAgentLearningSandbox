@@ -11,7 +11,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 HttpClient httpClient = new();
-string serverRoot = "https://localhost:7147";
+string serverRoot = "https://localhost:7174";
 
 ChatClientAgent changeColorAgent = (new AGUIChatClient(httpClient, $"{serverRoot}/clientToolAgent")).AsAIAgent(tools: [AIFunctionFactory.Create(ChangeColor)]);
 ChatClientAgent weatherAgent = (new AGUIChatClient(httpClient, $"{serverRoot}/weatherAgent")).AsAIAgent();
