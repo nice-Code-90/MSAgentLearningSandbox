@@ -324,6 +324,17 @@ This project demonstrates how to use the Token-Orientated Object Notation (TOON)
 - **Token Optimization:** Measuring the significant reduction in input tokens (up to 40-60% savings) when providing the agent with extensive reference data.
 - **Retrieval Accuracy:** Observing how LLMs often parse flat TOON structures with higher precision than deeply nested JSON.
 
+### 26. DurableAgents.AzureFunctions (Stateful Cloud Hosting)
+
+This project demonstrates how to host agents within Azure Functions using the `Microsoft.Agents.AI.Hosting.AzureFunctions` extension. It moves beyond local console apps to a production-ready, serverless architecture where agent state is automatically managed by the infrastructure.
+
+**Key Concepts:**
+
+- **Durable Agents:** Leveraging the Durable Task Framework to maintain agent state across multiple HTTP calls without manual serialization code.
+- **Azure Functions Integration:** Registering agents using `builder.ConfigureDurableAgents` in a dotnet-isolated worker process.
+- **Cloud-Native Persistence:** Automatically storing conversation threads and history in Azure Storage (Blobs, Queues, and Tables) via the Durable Functions backend.
+- **Serverless Orchestration:** Handling long-running agentic tasks in a scalable, event-driven environment while maintaining context.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -444,6 +455,15 @@ During the implementation of Project 25, it became clear that TOON is a "game ch
 - **The TOON Solution:** By stripping away quotes, colons, and repeating keys, TOON allows the agent to "see" more data within the same context window limit.
 - **Accuracy Boost:** Surprisingly, models often show higher retrieval accuracy with TOON (approx. 74%) compared to JSON (approx. 70%), as the model isn't "distracted" by the repetitive structural noise of JSON.
 - **Best Practice:** TOON should be used for flat lists and arrays. For deeply nested, complex objects, the overhead of converting to TOON might outweigh the benefits.
+
+### The Power of Durable State
+
+While Project 3 explored manual serialization to local files, Durable Agents automate this process at the infrastructure level.
+
+- **Stateless vs. Stateful:** Standard HTTP-triggered functions are stateless. Durable Agents solve the "amnesia" problem by preserving the `AgentThread` in Azure Storage, allowing the agent to remember context across different requests.
+- **Infrastructure Dependency:** Setting up Durable Agents requires a storage provider. During local development, the Azurite storage emulator (running in Docker) is mandatory.
+- **The Startup Pitfall:** A common error during setup is the `QueueServiceClient` constructor exception. This typically occurs if the `AzureWebJobsStorage` connection string is missing from `local.settings.json` or if the storage emulator is not reachable.
+- **Simplification:** Using `builder.ConfigureDurableAgents` significantly reduces boilerplate code for Dependency Injection and lifecycle management compared to manual implementations.
 
 ---
 
