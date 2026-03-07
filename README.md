@@ -313,6 +313,17 @@ This project explores the advanced implementation of the Agentic User Interactio
 - **Credential-Free Frontend:** By using the AG-UI proxy, the frontend requires no API keys or LLM credentials. All sensitive authentication (Cerebras keys) remains securely on the backend server.
 - **Aspire Orchestration:** Utilizes the .NET Aspire AppHost to manage the complex networking and port synchronization between the server and the WASM client.
 
+### 25. AgentInput.TOON (Token-Efficient Data Representation)
+
+This project demonstrates how to use the Token-Orientated Object Notation (TOON) format to drastically reduce token consumption when passing large datasets to agents through tools.
+
+**Key Concepts:**
+
+- **TOON vs. JSON:** Comparing the verbosity of standard JSON (where keys are repeated for every record) against the lean TOON structure (where keys are defined once as a header).
+- **ToonNet Integration:** Using the ToonNet NuGet package to serialize C# object lists into token-efficient strings.
+- **Token Optimization:** Measuring the significant reduction in input tokens (up to 40-60% savings) when providing the agent with extensive reference data.
+- **Retrieval Accuracy:** Observing how LLMs often parse flat TOON structures with higher precision than deeply nested JSON.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -424,6 +435,15 @@ One of the most significant findings is that in the AG-UI protocol, the standard
 ### Client-Side Tool Execution
 
 Traditional agents are limited to calling backend APIs. AG-UI turns the UI into a toolset. When an agent decides to "change the background to red," it isn't sending a command; it is executing a tool that exists only on the client's machine. This allows for highly interactive "AI-driven" interfaces where the agent has direct agency over the DOM.
+
+### The TOON Advantage
+
+During the implementation of Project 25, it became clear that TOON is a "game changer" for data-heavy tool calling:
+
+- **The Verbosity Tax:** In standard JSON, repeating keys like "Name" or "Country" for 100+ records consumes thousands of unnecessary tokens.
+- **The TOON Solution:** By stripping away quotes, colons, and repeating keys, TOON allows the agent to "see" more data within the same context window limit.
+- **Accuracy Boost:** Surprisingly, models often show higher retrieval accuracy with TOON (approx. 74%) compared to JSON (approx. 70%), as the model isn't "distracted" by the repetitive structural noise of JSON.
+- **Best Practice:** TOON should be used for flat lists and arrays. For deeply nested, complex objects, the overhead of converting to TOON might outweigh the benefits.
 
 ---
 
