@@ -392,6 +392,17 @@ This project implements a full voice-driven interaction loop. It demonstrates th
 - **Session Continuity:** Using `AgentSession` to maintain conversation context across multiple voice turns, allowing the agent to remember previous parts of the spoken conversation.
 - **Async Transcription Pattern:** Handling the transition from binary audio data to structured text using the `TranscribeAudioAsync` method from the OpenAI SDK.
 
+### 32. ChatHistory.CustomPersistence (Automatic Session Rehydration)
+
+This project demonstrates how to implement a custom persistence layer by extending the framework's `ChatHistoryProvider`. It automates the saving and loading of conversation history, allowing sessions to be resumed seamlessly using only a unique identifier.
+
+**Key Concepts:**
+
+- **Automated Lifecycle:** Unlike manual serialization, the `StoreChatHistoryAsync` method is triggered automatically by the agent during its execution loop, removing the need for boilerplate code after every `RunAsync` call.
+- **Session Rehydration:** Demonstrates "rehydrating" an agent's memory by fetching stored JSON messages based on a `SessionId` retrieved from the `StateBag`.
+- **State Management:** Utilizing the `InvokingContext.Session.StateBag` to persist and retrieve metadata (like IDs) across different execution turns.
+- **Security through Isolation:** By storing only a GUID (Global Unique Identifier) on the client-side while keeping the actual conversation data in a secure store (like the local Temp folder or a database), you ensure that sensitive history is not exposed to the user directly.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -552,6 +563,14 @@ During development, I identified three main patterns for registering tools:
 - **Static (No-DI):** Simple helper functions, no need for external state.
 - **Constructor DI:** The tool class receives its dependencies in the constructor (e.g., `ToolClass1(HttpClient)`). In this case, we must pass a ready, resolved instance to the agent.
 - **Method DI (Service Injection):** The method itself requests the provider. This is the most dynamic method, especially useful for static tool methods that still need services.
+
+### Manual Serialization vs. Provider-Based Persistence
+
+In Project 3, we manually called `agent.Serialize()` and handled the file I/O in our main logic. Project 32 introduces a "Set and Forget" architecture:
+
+- **The Advantage:** By injecting the `MyMessageStore` into the `ChatClientAgentOptions`, the agent handles its own memory management. This makes the code much cleaner and less error-prone.
+- **Storage Flexibility:** While this implementation uses local JSON files for simplicity, the provider pattern is designed to scale to professional environments like SQL Server, Azure Blob Storage, or NoSQL databases without changing the agent's core logic.
+- **Context Rehydration:** The model's "memory" is effectively restored because the provider injects the previous messages back into the prompt context before the LLM call is made, allowing for follow-up questions like "How tall is he?" to work perfectly even after a complete application restart.
 
 ---
 
