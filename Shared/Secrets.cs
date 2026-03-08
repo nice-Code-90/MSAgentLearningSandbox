@@ -1,3 +1,3 @@
 namespace Shared;
 
-public record Secrets(string CerebrasApiKey, string GitHubPatToken, string ModelId);
+public record Secrets(string LLMApiKey, string GitHubPatToken, string ModelId);

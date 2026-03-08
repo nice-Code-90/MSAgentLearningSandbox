@@ -18,7 +18,7 @@ Movie[] movieDataForRag = JsonSerializer.Deserialize<Movie[]>(jsonWithMovies)!;
 Secrets secrets = SecretManager.GetSecrets();
 
 OpenAIClient openaiClient = new(
-    new ApiKeyCredential(secrets.CerebrasApiKey),
+    new ApiKeyCredential(secrets.LLMApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 

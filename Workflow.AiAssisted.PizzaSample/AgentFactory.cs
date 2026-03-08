@@ -44,7 +44,7 @@ public class AgentFactory(Secrets secrets)
     private ChatClient GetChatClient()
     {
         var openAIClient = new OpenAIClient(
-            new ApiKeyCredential(secrets.CerebrasApiKey),
+            new ApiKeyCredential(secrets.LLMApiKey),
             new OpenAIClientOptions
             {
                 Endpoint = new Uri("https://api.cerebras.ai/v1"),

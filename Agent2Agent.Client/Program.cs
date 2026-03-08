@@ -10,7 +10,7 @@ Utils.WriteLineDarkGray("- Waiting 1 sec for the server to be ready");
 await Task.Delay(1000);
 Secrets secrets = SecretManager.GetSecrets();
 
-string apiKey = secrets.CerebrasApiKey;
+string apiKey = secrets.LLMApiKey;
 string modelId = secrets.ModelId;
 
 Utils.WriteLineDarkGray("- Connecting to Remote Agent");

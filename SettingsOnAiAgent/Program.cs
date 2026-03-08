@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 Secrets secrets = SecretManager.GetSecrets();
 
 OpenAIClient cerebrasClient = new(
-    new ApiKeyCredential(secrets.CerebrasApiKey),
+    new ApiKeyCredential(secrets.LLMApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 

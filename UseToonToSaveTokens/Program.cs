@@ -10,7 +10,7 @@ using Shared.Extensions;
 using UseToonToSaveTokens;
 
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.CerebrasApiKey;
+string apiKey = secrets.LLMApiKey;
 string modelId = secrets.ModelId;
 var openAIClient = new OpenAIClient(
     new ApiKeyCredential(apiKey),

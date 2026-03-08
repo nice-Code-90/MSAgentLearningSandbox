@@ -15,7 +15,7 @@ using var handler = new CustomClientHttpHandler();
 using var httpClient = new HttpClient(handler);
 
 OpenAIClient openaiClient = new(
-    new ApiKeyCredential(secrets.CerebrasApiKey),
+    new ApiKeyCredential(secrets.LLMApiKey),
     new OpenAIClientOptions
     {
         Endpoint = new Uri(cerebrasEndpoint),

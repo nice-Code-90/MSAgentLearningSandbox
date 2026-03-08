@@ -358,6 +358,18 @@ This project demonstrates long-term retention of user data using a custom `AICon
 - **Dual-Agent Strategy:** Using a dedicated, cost-effective model (Llama-3.1-8b) specifically for memory extraction, keeping the main agent focused on the primary task.
 - **File-based Persistence:** Simulating a database using local .txt files identified by a unique `userId`.
 
+### 29. TextToSpeech.Groq (Low-Latency Voice)
+
+This project demonstrates the integration of high-performance Text-to-Speech (TTS) capabilities using Groq's low-latency inference engine. It focuses on bridging the gap between OpenAI-compatible audio clients and specialized provider-specific models.
+
+**Key Concepts:**
+
+- **OpenAI-Compatible TTS:** Utilizing the `AudioClient` with custom endpoints (`api.groq.com`) to generate human-like speech.
+- **Model Constraints:** Handling the specific requirements of the `canopylabs/orpheus-v1-english` model, such as the mandatory `wav` response format.
+- **Raw PCM Playback:** Implementing `RawSourceWaveStream` from the NAudio library to play back headerless (raw) audio data that lacks the standard RIFF/WAV header.
+- **Audio Specifications:** Configuring `WaveFormat` (e.g., 24kHz, 16-bit, Mono) to match the internal sample rate of the inference model for accurate pitch and speed.
+- **Provider Handshaking:** Navigating `ClientResultException` scenarios, specifically the `model_terms_required` error, which necessitates manual acceptance of terms on the provider's console before API activation.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -495,6 +507,13 @@ Implementing a custom memory provider highlighted a major efficiency gain:
 - **Token Optimization:** Instead of resending a massive, growing conversation history, we only send a concise list of extracted facts.
 - **Asynchronous Processing:** Memory extraction happens in the background after the user has already received their response, ensuring zero impact on perceived latency.
 - **Consistency:** By injecting facts directly into the system prompt, the agent maintains a consistent persona and knowledge base across entirely different sessions.
+
+### The Challenge of Headerless WAVs
+
+During the development of Project 29, a critical discovery was made regarding "OpenAI-compatible" TTS endpoints:
+
+- **The Issue:** While the framework expects a standard file (like MP3 or a valid WAV with headers), some high-speed providers like Groq return raw PCM bytes. Attempting to use a standard `WaveFileReader` results in an `ArgumentOutOfRangeException` because the "RIFF" signature is missing.
+- **The Solution:** By inspecting the byte length (verifying it's not a JSON error message) and wrapping the stream in a `RawSourceWaveStream` with a predefined `WaveFormat`, we achieve sub-second voice generation and playback without local file transcoding.
 
 ---
 

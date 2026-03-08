@@ -13,12 +13,12 @@ public class SecretManager
             .Build();
 
 
-        string cerebrasKey = config["Cerebras:ApiKey"] ?? string.Empty;
-        string modelId = config["Cerebras:Model"] ?? "qwen-3-32b";
+        string llmAPIKey = config["LlmProvider:ApiKey"] ?? string.Empty;
+        string modelId = config["LlmProvider:Model"] ?? "qwen-3-32b";
         string githubPatToken = config["GitHubPatToken"] ?? string.Empty;
 
 
 
-        return new Secrets(cerebrasKey, githubPatToken, modelId);
+        return new Secrets(llmAPIKey, githubPatToken, modelId);
     }
 }

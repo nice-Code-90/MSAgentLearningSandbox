@@ -13,7 +13,7 @@ using ChatMessage = Microsoft.Extensions.AI.ChatMessage;
 Secrets secrets = SecretManager.GetSecrets();
 
 var openAIClient = new OpenAIClient(
-    new ApiKeyCredential(secrets.CerebrasApiKey),
+    new ApiKeyCredential(secrets.LLMApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 

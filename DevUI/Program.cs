@@ -9,7 +9,7 @@ using OpenAI;
 using OpenAI.Chat;
 
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.CerebrasApiKey;
+string apiKey = secrets.LLMApiKey;
 string modelId = secrets.ModelId;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

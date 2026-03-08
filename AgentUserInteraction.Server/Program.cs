@@ -10,7 +10,7 @@ using OpenAI;
 
 Console.Clear();
 Secrets secrets = SecretManager.GetSecrets();
-string apiKey = secrets.CerebrasApiKey;
+string apiKey = secrets.LLMApiKey;
 string modelId = secrets.ModelId;
 
 var openAIClient = new OpenAIClient(

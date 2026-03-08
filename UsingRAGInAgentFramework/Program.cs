@@ -18,7 +18,7 @@ string userQuestion = "What is the 3 highest rated adventure movies? List their 
 Secrets secrets = SecretManager.GetSecrets();
 
 OpenAIClient openaiClient = new(
-    new ApiKeyCredential(secrets.CerebrasApiKey),
+    new ApiKeyCredential(secrets.LLMApiKey),
     new OpenAIClientOptions { Endpoint = new Uri("https://api.cerebras.ai/v1") }
 );
 ChatClient chatClient = openaiClient.GetChatClient(secrets.ModelId);
