@@ -346,6 +346,18 @@ This project demonstrates how to run a Small Language Model (SLM) completely off
 - **Zero-Dependency AI:** Executing AI calls using only local hardware (CPU/GPU) with no requirement for background services like Ollama.
 - **.AsAIAgent() Pattern:** Converting the specialized ONNX client into a standard `ChatClientAgent` to maintain framework consistency.
 
+### 28. UserMemory.CustomProvider (Persistent Facts)
+
+This project demonstrates long-term retention of user data using a custom `AIContextProvider`. It allows the agent to "remember" specific user details (name, preferences, location) even after the application is restarted and the conversation thread is cleared.
+
+**Key Concepts:**
+
+- **AIContextProvider:** The framework's central interface for injecting dynamic context into every LLM call.
+- **ProvideAIContextAsync:** Automatically prepends saved facts to the System Instructions, ensuring the agent is always aware of the user's background.
+- **StoreAIContextAsync:** A post-response hook that analyzes the latest exchange to extract and update new "memories."
+- **Dual-Agent Strategy:** Using a dedicated, cost-effective model (Llama-3.1-8b) specifically for memory extraction, keeping the main agent focused on the primary task.
+- **File-based Persistence:** Simulating a database using local .txt files identified by a unique `userId`.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -475,6 +487,14 @@ While Project 3 explored manual serialization to local files, Durable Agents aut
 - **Infrastructure Dependency:** Setting up Durable Agents requires a storage provider. During local development, the Azurite storage emulator (running in Docker) is mandatory.
 - **The Startup Pitfall:** A common error during setup is the `QueueServiceClient` constructor exception. This typically occurs if the `AzureWebJobsStorage` connection string is missing from `local.settings.json` or if the storage emulator is not reachable.
 - **Simplification:** Using `builder.ConfigureDurableAgents` significantly reduces boilerplate code for Dependency Injection and lifecycle management compared to manual implementations.
+
+### The "Persistent Fact" vs. "Full History" Trade-off
+
+Implementing a custom memory provider highlighted a major efficiency gain:
+
+- **Token Optimization:** Instead of resending a massive, growing conversation history, we only send a concise list of extracted facts.
+- **Asynchronous Processing:** Memory extraction happens in the background after the user has already received their response, ensuring zero impact on perceived latency.
+- **Consistency:** By injecting facts directly into the system prompt, the agent maintains a consistent persona and knowledge base across entirely different sessions.
 
 ---
 
