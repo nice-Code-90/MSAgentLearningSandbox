@@ -335,6 +335,17 @@ This project demonstrates how to host agents within Azure Functions using the `M
 - **Cloud-Native Persistence:** Automatically storing conversation threads and history in Azure Storage (Blobs, Queues, and Tables) via the Durable Functions backend.
 - **Serverless Orchestration:** Handling long-running agentic tasks in a scalable, event-driven environment while maintaining context.
 
+### 27. LocalLLM.ONNX (Offline Phi-4-mini)
+
+This project demonstrates how to run a Small Language Model (SLM) completely offline, without any external services or API keys, using the ONNX format.
+
+**Key Concepts:**
+
+- **Hugging Face CLI:** Utilizing the `huggingface_hub` to download specific model variants (e.g., `microsoft/Phi-4-mini-instruct-onnx`).
+- **OnnxRuntimeGenAIChatClient:** Initializing the dedicated chat client by pointing it to a local folder containing the model weights and configurations.
+- **Zero-Dependency AI:** Executing AI calls using only local hardware (CPU/GPU) with no requirement for background services like Ollama.
+- **.AsAIAgent() Pattern:** Converting the specialized ONNX client into a standard `ChatClientAgent` to maintain framework consistency.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
