@@ -370,6 +370,17 @@ This project demonstrates the integration of high-performance Text-to-Speech (TT
 - **Audio Specifications:** Configuring `WaveFormat` (e.g., 24kHz, 16-bit, Mono) to match the internal sample rate of the inference model for accurate pitch and speed.
 - **Provider Handshaking:** Navigating `ClientResultException` scenarios, specifically the `model_terms_required` error, which necessitates manual acceptance of terms on the provider's console before API activation.
 
+### 30. ToolCalling.ServiceInjection (Advanced DI Pattern)
+
+This project demonstrates how to handle complex dependencies within AI tools using the framework's built-in service injection capabilities.
+
+**Key Concepts:**
+
+- **Method-Level DI:** Defining tools that accept `IServiceProvider` as a parameter.
+- **Service Registration:** Passing the `serviceProvider` to the agent via the `services` parameter during the `.AsAIAgent()` call.
+- **Hybrid Tool Management:** Simultaneous use of static methods, instance methods, and classes resolved via DI (e.g., `HttpClient`).
+- **Exception Prevention:** How to avoid runtime errors when a tool requires an external resource that the agent should resolve on its own.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
@@ -514,6 +525,22 @@ During the development of Project 29, a critical discovery was made regarding "O
 
 - **The Issue:** While the framework expects a standard file (like MP3 or a valid WAV with headers), some high-speed providers like Groq return raw PCM bytes. Attempting to use a standard `WaveFileReader` results in an `ArgumentOutOfRangeException` because the "RIFF" signature is missing.
 - **The Solution:** By inspecting the byte length (verifying it's not a JSON error message) and wrapping the stream in a `RawSourceWaveStream` with a predefined `WaveFormat`, we achieve sub-second voice generation and playback without local file transcoding.
+
+### The "Magic Parameter" (IServiceProvider) in Tools
+
+Project 30 highlighted one of the framework's most useful "hidden" capabilities:
+
+- **The Issue:** When a tool (e.g., database access or HTTP client) needs a service, but we register the tool as a static method or don't want to manually instantiate it with all its dependencies.
+- **The Solution:** If we pass the `services: serviceProvider` parameter when creating the agent, the framework becomes capable of automatically populating the `IServiceProvider` parameter in the tool method's signature at the moment of the call.
+- **Flexibility:** This allows tools to request necessary resources "on-the-fly" (`serviceProvider.GetRequiredService<T>()`), so not all dependencies need to be pre-manufactured during agent initialization.
+
+### Tool Instantiation Strategies
+
+During development, I identified three main patterns for registering tools:
+
+- **Static (No-DI):** Simple helper functions, no need for external state.
+- **Constructor DI:** The tool class receives its dependencies in the constructor (e.g., `ToolClass1(HttpClient)`). In this case, we must pass a ready, resolved instance to the agent.
+- **Method DI (Service Injection):** The method itself requests the provider. This is the most dynamic method, especially useful for static tool methods that still need services.
 
 ---
 
