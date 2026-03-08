@@ -119,6 +119,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateSpeech", "GenerateS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolCalling.ServiceInjection", "ToolCalling.ServiceInjection\ToolCalling.ServiceInjection.csproj", "{9897F817-7A10-47F3-9F12-3D2E4B7CCD26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechToText", "SpeechToText\SpeechToText.csproj", "{525C184D-971E-4F3A-B850-4ADC4839E24F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -561,6 +563,18 @@ Global
 		{9897F817-7A10-47F3-9F12-3D2E4B7CCD26}.Release|x64.Build.0 = Release|Any CPU
 		{9897F817-7A10-47F3-9F12-3D2E4B7CCD26}.Release|x86.ActiveCfg = Release|Any CPU
 		{9897F817-7A10-47F3-9F12-3D2E4B7CCD26}.Release|x86.Build.0 = Release|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Debug|x64.Build.0 = Debug|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Debug|x86.Build.0 = Debug|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Release|x64.ActiveCfg = Release|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Release|x64.Build.0 = Release|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Release|x86.ActiveCfg = Release|Any CPU
+		{525C184D-971E-4F3A-B850-4ADC4839E24F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -605,6 +619,7 @@ Global
 		{B00C02E6-B769-41AB-8EB4-37FEC1156D8C} = {E7CB622C-890D-4D4E-BFAE-3CF7BD0BA574}
 		{A9101DF5-9120-4676-A0C2-CE2B161EE375} = {9B286149-CDE9-4A60-A56A-1D10ECB345D7}
 		{9897F817-7A10-47F3-9F12-3D2E4B7CCD26} = {F530F044-9D5E-449B-A7FC-7D3AED1A5FB6}
+		{525C184D-971E-4F3A-B850-4ADC4839E24F} = {9B286149-CDE9-4A60-A56A-1D10ECB345D7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43465066-A041-4BC9-BA36-965942B96F36}

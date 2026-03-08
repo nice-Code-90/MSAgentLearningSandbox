@@ -381,6 +381,17 @@ This project demonstrates how to handle complex dependencies within AI tools usi
 - **Hybrid Tool Management:** Simultaneous use of static methods, instance methods, and classes resolved via DI (e.g., `HttpClient`).
 - **Exception Prevention:** How to avoid runtime errors when a tool requires an external resource that the agent should resolve on its own.
 
+### 31. VoiceToText.InteractionLoop (Hands-Free AI)
+
+This project implements a full voice-driven interaction loop. It demonstrates the coordination between specialized audio transcription models and reasoning models to create a fluid, hands-free AI experience using high-speed inference.
+
+**Key Concepts:**
+
+- **Real-time Audio Capture:** Implementing a `WaveInEvent` recording loop with NAudio to capture microphone input directly into a `MemoryStream` for immediate cloud processing.
+- **Audio Transcription (STT):** Utilizing the `whisper-large-v3` model via the `AudioClient` to convert recorded audio streams into text with sub-second latency.
+- **Session Continuity:** Using `AgentSession` to maintain conversation context across multiple voice turns, allowing the agent to remember previous parts of the spoken conversation.
+- **Async Transcription Pattern:** Handling the transition from binary audio data to structured text using the `TranscribeAudioAsync` method from the OpenAI SDK.
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama
