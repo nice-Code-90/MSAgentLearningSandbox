@@ -403,6 +403,17 @@ This project demonstrates how to implement a custom persistence layer by extendi
 - **State Management:** Utilizing the `InvokingContext.Session.StateBag` to persist and retrieve metadata (like IDs) across different execution turns.
 - **Security through Isolation:** By storing only a GUID (Global Unique Identifier) on the client-side while keeping the actual conversation data in a secure store (like the local Temp folder or a database), you ensure that sensitive history is not exposed to the user directly.
 
+### 33. AgentFrameworkToolkit Integration (The "Easy Agents" Pattern)
+
+This project demonstrates how to use the AgentFrameworkToolkit to eliminate boilerplate code when building agents. It showcases the transition from a "Raw" implementation to a "Toolkit-optimized" version.
+
+**Key Concepts:**
+
+- **CerebrasAgentFactory:** Abstracting the OpenAIClient and endpoint configuration into a single factory call.
+- **Simplified Middleware:** Using the `RawToolCallDetails` option to log tool executions without building manual middleware chains.
+- **Implicit Structured Output:** Utilizing `agent.RunAsync<T>` to handle JSON schema generation, response formatting, and deserialization in a single line of code.
+- **Code Efficiency:** Comparing a 84-line standard implementation (`Before.cs`) against a 36-line toolkit implementation (`After.cs`).
+
 ## Technical Insights & Learning Outcomes
 
 ### The Routing Choice: Qwen vs. Llama

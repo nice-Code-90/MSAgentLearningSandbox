@@ -125,6 +125,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatMessageStoreFactory", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatMessageStoreFactory.Custom", "ChatMessageStoreFactory.Custom\ChatMessageStoreFactory.Custom.csproj", "{D879006C-AE40-4E22-8FB1-25D9F545C654}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AgentFrameworkToolkit", "AgentFrameworkToolkit", "{1F4676C1-D464-4EDE-90E9-1C08FA4DF1CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentFrameworkToolkit.EasierAgents", "AgentFrameworkToolkit.EasierAgents\AgentFrameworkToolkit.EasierAgents.csproj", "{2997FB82-C210-4BB7-A752-F791D98C6487}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -591,6 +595,18 @@ Global
 		{D879006C-AE40-4E22-8FB1-25D9F545C654}.Release|x64.Build.0 = Release|Any CPU
 		{D879006C-AE40-4E22-8FB1-25D9F545C654}.Release|x86.ActiveCfg = Release|Any CPU
 		{D879006C-AE40-4E22-8FB1-25D9F545C654}.Release|x86.Build.0 = Release|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Debug|x64.Build.0 = Debug|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Debug|x86.Build.0 = Debug|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Release|x64.ActiveCfg = Release|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Release|x64.Build.0 = Release|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Release|x86.ActiveCfg = Release|Any CPU
+		{2997FB82-C210-4BB7-A752-F791D98C6487}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -637,6 +653,7 @@ Global
 		{9897F817-7A10-47F3-9F12-3D2E4B7CCD26} = {F530F044-9D5E-449B-A7FC-7D3AED1A5FB6}
 		{525C184D-971E-4F3A-B850-4ADC4839E24F} = {9B286149-CDE9-4A60-A56A-1D10ECB345D7}
 		{D879006C-AE40-4E22-8FB1-25D9F545C654} = {4845BD0F-44F2-44D5-9D46-E93EB2DB83E3}
+		{2997FB82-C210-4BB7-A752-F791D98C6487} = {1F4676C1-D464-4EDE-90E9-1C08FA4DF1CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43465066-A041-4BC9-BA36-965942B96F36}
